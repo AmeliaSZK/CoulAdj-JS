@@ -15,19 +15,25 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-/* There are 6 buttons on the page:
-- Choose File
-- Restore defaults
-- Ok
-- Reset
-- Copy to clipboard
-- Save As...
+/** There are 6 buttons on the page:
+ *    - Choose File
+ *    - Restore defaults
+ *    - Ok
+ *    - Reset
+ *    - Copy to Clipboard
+ *    - Save As...
+ * 
+ * Of those, (as far as I currently know) 3 need a JavaScript implementation:
+ *    - Ok
+ *    - Copy to Clipboard
+ *    - Save As...
+ */
 
-Of those, (as far as I currently know) 3 need a JavaScript implementation:
-- Ok
-- Copy to clipboard
-- Save As...
-*/
+/** To disable pesky verifications during development. Hopefully I remember to
+ * turn it off before production lol.
+ * 
+ */
+const DEV_MODE = true;
 
 /** Process the source image and write the output.
  * 
@@ -58,9 +64,25 @@ const saveAsButtonClick = (evt) => {
 const main = () => {
   console.log('main() started.');
 
+  if (DEV_MODE) {
+    activateDevMode();
+  }
+
   document.getElementById('input-ok-button').addEventListener('click', okButtonClick);
   document.getElementById('output-copy-button').addEventListener('click', copyButtonClick);
   document.getElementById('output-saveas-button').addEventListener('click', saveAsButtonClick);
 }
 
 document.addEventListener("DOMContentLoaded", main);
+
+const activateDevMode = () => {
+  console.log('Dev mode activated.');
+  const chooseFileButton = document.getElementById('choose-file-button');
+  const outputTextbox = document.getElementById('output-textbox');
+
+  /** TODO
+   * 1) Remove the 'required' in chooseFileButton
+   * 2) Keep in mind it does nothing since we used "preventDefault"
+   * 3) Put sample data in the outputTextbox
+   */
+}
