@@ -52,6 +52,10 @@ const okButtonClick = (evt) => {
  */
 const copyButtonClick = (evt) => {
   console.log('Copy to Clipboard button clicked.');
+  const outputTextbox = document.getElementById('output-textbox');
+  outputTextbox.select();
+  document.execCommand('copy');
+
 }
 
 /** Open a Save File dialog to export the output in a TSV file.
@@ -82,6 +86,7 @@ const activateDevMode = () => {
   const chooseFileButton = document.getElementById('choose-file-button');
   const outputTextbox = document.getElementById('output-textbox');
 
-  chooseFileButton.attributes.removeNamedItem("required");
+  chooseFileButton.attributes.removeNamedItem('required');
+  outputTextbox.attributes.removeNamedItem('readonly');
   outputTextbox.innerHTML = 'Hello Inner Text\n' + 'Next line?\n' + 'Tabs\t?\tHello';
 }
