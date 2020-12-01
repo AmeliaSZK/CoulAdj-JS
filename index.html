@@ -2,10 +2,50 @@
 <html>
 
 <head>
-
+    <title>CoulAdj</title>
 </head>
 
 <body>
+    <h1>CoulAdj</h1>
+    <p>Extract the colour adjacencies from an image file.
+        Everything is processed locally; no data sent to anyone!
+    </p>
+
+    <h2>Input</h2>
+    <form>
+        <input type="text" id="source-filepath" name="source-filepath" value="">
+        <button type="button">Open</button>
+
+        <fieldset>
+            <legend>Options</legend>
+
+            <fieldset>
+                <legend>Diagonals are...</legend>
+
+                <input type="radio" name="opt-diags" id="opt-diags-1" value="adjacent">
+                <label for="opt-diags-1">Adjacent</label>
+                
+                <input type="radio" name="opt-diags" id="opt-diags-2" value="unrelated">
+                <label for="opt-diags-2">Unrelated</label>
+
+            </fieldset>
+
+            <fieldset>
+                <legend>Include alpha column...</legend>
+
+                <input type="radio" name="opt-alpha" id="opt-alpha-1" value="when-present">
+                <label for="opt-alpha-1">When source has alpha</label>
+                
+                <input type="radio" name="opt-alpha" id="opt-alpha-2" value="always">
+                <label for="opt-alpha-2">Always</label>
+
+            </fieldset>
+
+
+        </fieldset>
+    </form>
+
+    <h2>Output</h2>
 
 </body>
 
