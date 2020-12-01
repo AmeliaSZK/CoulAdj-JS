@@ -2,74 +2,74 @@
 <html>
 
 <head>
-    <title>CoulAdj</title>
+  <title>CoulAdj</title>
 </head>
 
 <body>
-    <h1>CoulAdj</h1>
-    <p id="quick-description">Extract the colour adjacencies from an image file.
-        Everything is processed locally; no data sent to anyone!
-    </p>
+  <h1>CoulAdj</h1>
+  <p id="quick-description">Extract the colour adjacencies from an image file.
+    Everything is processed locally; no data sent to anyone!
+  </p>
 
-    <p id="legal-disclaimer">
-        <em>Service provided as-is; no guarantee is made regarding accuracy of the results.</em>
-    </p>
+  <p id="legal-disclaimer">
+    <em>Service provided as-is; no guarantee is made regarding accuracy of the results.</em>
+  </p>
 
-    <form id="input-form">
-        <h2>Input</h2>
+  <form id="input-form">
+    <h2>Input</h2>
 
-        <label for="image">Source image</label>
-        <input type="file" name="image" id="image" accept="image/*" required>
+    <label for="image">Source image</label>
+    <input type="file" name="image" id="image" accept="image/*" required>
 
-        <fieldset>
-            <legend>Options</legend>
+    <fieldset>
+      <legend>Options</legend>
 
-            <fieldset>
-                <legend>Diagonals are...</legend>
-                <ul>
-                    <li>
-                        <input type="radio" name="opt-diags" id="opt-diags-1" value="adjacent" checked>
-                        <label for="opt-diags-1">Adjacent</label>
-                    </li>
-                    <li>
-                        <input type="radio" name="opt-diags" id="opt-diags-2" value="unrelated">
-                        <label for="opt-diags-2">Unrelated</label>
-                    </li>
-                </ul>
-            </fieldset>
+      <fieldset>
+        <legend>Diagonals are...</legend>
+        <ul>
+          <li>
+            <input type="radio" name="opt-diags" id="opt-diags-1" value="adjacent" checked>
+            <label for="opt-diags-1">Adjacent</label>
+          </li>
+          <li>
+            <input type="radio" name="opt-diags" id="opt-diags-2" value="unrelated">
+            <label for="opt-diags-2">Unrelated</label>
+          </li>
+        </ul>
+      </fieldset>
 
-            <fieldset>
-                <legend>Include alpha column...</legend>
-                <ul>
-                    <li>
-                        <input type="radio" name="opt-alpha" id="opt-alpha-1" value="when-present" checked>
-                        <label for="opt-alpha-1">When source has alpha</label>
-                    </li>
-                    <li>
-                        <input type="radio" name="opt-alpha" id="opt-alpha-2" value="always">
-                        <label for="opt-alpha-2">Always</label>
-                    </li>
-                </ul>
-            </fieldset>
-        </fieldset>
+      <fieldset>
+        <legend>Include alpha column...</legend>
+        <ul>
+          <li>
+            <input type="radio" name="opt-alpha" id="opt-alpha-1" value="when-present" checked>
+            <label for="opt-alpha-1">When source has alpha</label>
+          </li>
+          <li>
+            <input type="radio" name="opt-alpha" id="opt-alpha-2" value="always">
+            <label for="opt-alpha-2">Always</label>
+          </li>
+        </ul>
+      </fieldset>
+    </fieldset>
 
-        <button type="reset">Restore defaults</button>
-        <button type="submit">Ok</button>
-    </form>
+    <button type="reset">Restore defaults</button>
+    <button type="submit">Ok</button>
+  </form>
 
-    <form id="output-form">
-        <label for="output-textbox">
-            <h2>Output</h2>
-        </label>
+  <form id="output-form">
+    <label for="output-textbox">
+      <h2>Output</h2>
+    </label>
 
-        <textarea id="output-textbox" name="output" rows="16" cols="48" readonly></textarea>
+    <textarea id="output-textbox" name="output" rows="16" cols="48" readonly></textarea>
 
-        <div>
-            <button type="reset" id="output-reset-button">Reset</button>
-            <button type="button" id="output-copy-button">Copy to clipboard</button>
-            <button type="button" id="output-saveas-button">Save As...</button>
-        </div>
-    </form>
+    <div>
+      <button type="reset" id="output-reset-button">Reset</button>
+      <button type="button" id="output-copy-button">Copy to clipboard</button>
+      <button type="button" id="output-saveas-button">Save As...</button>
+    </div>
+  </form>
 
 </body>
 
