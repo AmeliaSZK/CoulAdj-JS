@@ -42,7 +42,8 @@ const DEV_MODE = true;
 const okButtonClick = (evt) => {
   console.log('OK button clicked.');
   evt.stopPropagation(); // I don't know why my teacher said I need this
-  evt.preventDefault(); // Needed to prevent the page from reloading
+  evt.preventDefault(); // Needed to prevent the page from reloading.
+  // preventDefault will also disable the default `required` verification!!
 }
 
 /** Copy the output to the clipboard
@@ -77,12 +78,10 @@ document.addEventListener("DOMContentLoaded", main);
 
 const activateDevMode = () => {
   console.log('Dev mode activated.');
+
   const chooseFileButton = document.getElementById('choose-file-button');
   const outputTextbox = document.getElementById('output-textbox');
 
-  /** TODO
-   * 1) Remove the 'required' in chooseFileButton
-   * 2) Keep in mind it does nothing since we used "preventDefault"
-   * 3) Put sample data in the outputTextbox
-   */
+  chooseFileButton.attributes.removeNamedItem("required");
+  outputTextbox.innerHTML = 'Hello Inner Text\n' + 'Next line?\n' + 'Tabs\t?\tHello';
 }
