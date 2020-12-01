@@ -13,8 +13,8 @@
 
     <h2>Input</h2>
     <form>
-        <input type="text" id="source-filepath" name="source-filepath" value="">
-        <button type="button">Open</button>
+        <label for="image">Source image</label>
+        <input type="file" name="image" id="image" accept="image/*" required>
 
         <fieldset>
             <legend>Options</legend>
@@ -22,9 +22,9 @@
             <fieldset>
                 <legend>Diagonals are...</legend>
 
-                <input type="radio" name="opt-diags" id="opt-diags-1" value="adjacent">
+                <input type="radio" name="opt-diags" id="opt-diags-1" value="adjacent" checked>
                 <label for="opt-diags-1">Adjacent</label>
-                
+
                 <input type="radio" name="opt-diags" id="opt-diags-2" value="unrelated">
                 <label for="opt-diags-2">Unrelated</label>
 
@@ -33,16 +33,18 @@
             <fieldset>
                 <legend>Include alpha column...</legend>
 
-                <input type="radio" name="opt-alpha" id="opt-alpha-1" value="when-present">
+                <input type="radio" name="opt-alpha" id="opt-alpha-1" value="when-present" checked>
                 <label for="opt-alpha-1">When source has alpha</label>
-                
+
                 <input type="radio" name="opt-alpha" id="opt-alpha-2" value="always">
                 <label for="opt-alpha-2">Always</label>
 
             </fieldset>
-
-
         </fieldset>
+
+        <button type="reset">Restore defaults</button>
+        <button type="submit">Ok</button>
+
     </form>
 
     <h2>Output</h2>
