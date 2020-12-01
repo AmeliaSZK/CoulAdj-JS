@@ -10,6 +10,14 @@ and documentation.
 
 This project is still in development.
 
+Long term objective is to port this as an Excel Add-In.
+
+# About this Github repository
+
+*   I made this Github repository public so I could share with my twitter friends.
+*   It may be made private in the future.
+
+
 # How to run
 
 1. Clone the git repository
