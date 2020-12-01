@@ -10,18 +10,30 @@ and documentation.
 
 This project is still in development.
 
+# How to run
 
-# Intended Final API
+1. Clone the git repository
+1. Open `index.html` in your favourite web browser
 
-## Input
+This project is being developed with Visual Studio Code and tested with mostly
+Microsoft Edge for Linux and sometimes Google Chrome. I don't know how this choice
+of tools can affect development and compatibility.
+
+
+# API
+
+## Input 
 *   Source image file
 *   Options
     * Don't relate diagonals
         * For each pixel, only consider as adjacent the four (4) neighbours with
         a common edge. (top, bottom, left, and right neighbours)
+        * By default, all 8 neighbours are considered adjacent.
     * Always include alpha column in output
         * If the image doesn't have an alpha component, one will be added at
         full opacity in the output.
+        * By default, images without an alpha component won't get the
+        alpha columns in the output.
 
 ### Command Line Interface
 
@@ -30,9 +42,7 @@ to use Node.js for this first implementation.
 
 
 ## Output
-*   Tab-separated values in a text box.
-    * Maybe a button to copy the data to the clipboard?
-    * Maybe a button to export the data to a file?
+*   Tab-separated values.
 *   For images **with** an alpha channel, data will be formatted like this:
 
     |r  |g  |b  |a  |adj_r|adj_g|adj_b|adj_a|
