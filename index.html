@@ -17,9 +17,8 @@
     <em>Service provided as-is; no guarantee is made regarding accuracy of the results.</em>
   </p>
 
+  <h2>Input</h2>
   <form id="input-form">
-    <h2>Input</h2>
-
     <label for="image">Source image</label>
     <input type="file" name="image" id="image" accept="image/*" required>
 
@@ -59,11 +58,8 @@
     <button type="submit" id="input-ok-button">Ok</button>
   </form>
 
+  <h2>Output</h2>
   <form id="output-form">
-    <label for="output-textbox">
-      <h2>Output</h2>
-    </label>
-
     <textarea id="output-textbox" name="output" rows="16" cols="48" readonly></textarea>
 
     <div>
@@ -72,6 +68,8 @@
       <button type="button" id="output-saveas-button">Save As...</button>
     </div>
   </form>
+
+  <p id="status-messages"></p>
 
 </body>
 
