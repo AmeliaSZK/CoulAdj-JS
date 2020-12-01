@@ -11,8 +11,9 @@
         Everything is processed locally; no data sent to anyone!
     </p>
 
-    <h2>Input</h2>
-    <form>
+    <form id="input-form">
+        <h2>Input</h2>
+
         <label for="image">Source image</label>
         <input type="file" name="image" id="image" accept="image/*" required>
 
@@ -47,7 +48,19 @@
 
     </form>
 
-    <h2>Output</h2>
+    <form>
+        <label for="output-textbox">
+            <h2>Output</h2>
+        </label>
+
+        <textarea id="output-textbox" name="output" rows="16" cols="48"></textarea>
+
+        <div>
+            <button type="reset" id="output-reset-button">Reset</button>
+            <button type="button" id="output-copy-button">Copy to clipboard</button>
+            <button type="button" id="output-saveas-button">Save As...</button>
+        </div>
+    </form>
 
 </body>
 
