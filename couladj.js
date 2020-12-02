@@ -21,12 +21,12 @@
  *    - Ok
  *    - Reset
  *    - Copy to Clipboard
- *    - Save As...
+ *    - Download
  * 
  * Of those, (as far as I currently know) 3 need a JavaScript implementation:
  *    - Ok
  *    - Copy to Clipboard
- *    - Save As...
+ *    - Download
  */
 
 /** To disable pesky verifications during development. Hopefully I remember to
@@ -58,12 +58,29 @@ const copyButtonClick = (evt) => {
 
 }
 
-/** Open a Save File dialog to export the output in a TSV file.
+/** Downloads the output as a TSV file.
  * 
  * @param {Event} evt 
  */
-const saveAsButtonClick = (evt) => {
-  console.log('Save As button clicked.');
+const downloadButtonClick = (evt) => {
+  // Adapted from Rob Kendal's solution:
+  // https://robkendal.co.uk/blog/2020-04-17-saving-text-to-client-side-file-using-vanilla-js
+
+  console.log('Download button clicked.');
+
+  const textToSave = document.getElementById('output-textbox').innerHTML; //maybe .value?
+  const filename = 'colour-adjacencies.tsv';
+  const mimeType = 'text/tab-separated-values';
+
+  const a = document.createElement('a');
+  const file = new Blob([textToSave], { type: mimeType });
+
+  a.href = URL.createObjectURL(file);
+  a.download = filename;
+  a.click();
+
+  URL.revokeObjectURL(a.href);
+
 }
 
 const main = () => {
@@ -75,7 +92,7 @@ const main = () => {
 
   document.getElementById('input-ok-button').addEventListener('click', okButtonClick);
   document.getElementById('output-copy-button').addEventListener('click', copyButtonClick);
-  document.getElementById('output-saveas-button').addEventListener('click', saveAsButtonClick);
+  document.getElementById('output-download-button').addEventListener('click', downloadButtonClick);
 }
 
 document.addEventListener("DOMContentLoaded", main);
