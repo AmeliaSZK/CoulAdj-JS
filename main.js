@@ -29,8 +29,6 @@
  *    - Download
  */
 
-import { computeColourAdjacencies } from "./couladj.js";
-
 /** To disable pesky verifications during development. Hopefully I remember to
  * turn it off before production lol.
  * 
@@ -46,9 +44,7 @@ const okButtonClick = (evt) => {
   evt.stopPropagation(); // I don't know why my teacher said I need this
   evt.preventDefault(); // Needed to prevent the page from reloading.
   // preventDefault will also disable the default `required` verification!!
-
-  const outputData = computeColourAdjacencies();
-  console.log(outputData);
+  
 }
 
 /** Copy the output to the clipboard
