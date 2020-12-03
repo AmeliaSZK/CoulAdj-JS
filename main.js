@@ -57,6 +57,9 @@ const okButtonClick = (evt) => {
   evt.preventDefault(); // Needed to prevent the page from reloading.
   // preventDefault will also disable the default `required` verification!!
 
+  const outputData = computeColourAdjacencies();
+  console.log(outputData);
+
 }
 
 /** Copy the output to the clipboard
@@ -130,3 +133,7 @@ const activateDevMode = () => {
 //
 // Ascii art from http://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=CoulAdj
 
+
+const computeColourAdjacencies = () => {
+  return 'hello';
+}
