@@ -15,6 +15,18 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+
+// ██   ██  ██████   ██████  ██   ██ ███████ 
+// ██   ██ ██    ██ ██    ██ ██  ██  ██      
+// ███████ ██    ██ ██    ██ █████   ███████ 
+// ██   ██ ██    ██ ██    ██ ██  ██       ██ 
+// ██   ██  ██████   ██████  ██   ██ ███████ 
+//                                           
+// Ascii art from http://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=HOOKS
+
+
+
+
 /** There are 6 buttons on the page:
  *    - Choose File
  *    - Restore defaults
@@ -44,7 +56,7 @@ const okButtonClick = (evt) => {
   evt.stopPropagation(); // I don't know why my teacher said I need this
   evt.preventDefault(); // Needed to prevent the page from reloading.
   // preventDefault will also disable the default `required` verification!!
-  
+
 }
 
 /** Copy the output to the clipboard
@@ -108,3 +120,13 @@ const activateDevMode = () => {
   outputTextbox.attributes.removeNamedItem('readonly');
   outputTextbox.innerHTML = 'Hello Inner Text\n' + 'Next line?\n' + 'Tabs\t?\tHello';
 }
+
+
+//  ██████  ██████  ██    ██ ██       █████  ██████       ██ 
+// ██      ██    ██ ██    ██ ██      ██   ██ ██   ██      ██ 
+// ██      ██    ██ ██    ██ ██      ███████ ██   ██      ██ 
+// ██      ██    ██ ██    ██ ██      ██   ██ ██   ██ ██   ██ 
+//  ██████  ██████   ██████  ███████ ██   ██ ██████   █████  
+//
+// Ascii art from http://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=CoulAdj
+
