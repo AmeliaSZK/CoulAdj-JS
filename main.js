@@ -58,6 +58,7 @@ const activateDevMode = () => {
 /** Process the source image and write the output.
  * 
  * @param {Event} evt 
+ * @returns `false` when an error occured. `true` otherwise.
  */
 const okButtonClick = (evt) => {
   console.log('OK button clicked.');
@@ -65,8 +66,18 @@ const okButtonClick = (evt) => {
   evt.preventDefault(); // Needed to prevent the page from reloading.
   // preventDefault will also disable the default `required` verification!!
 
+  const chosenFiles = document.getElementById('choose-file-button').files;
+  console.log(chosenFiles);
+
+  if(chosenFiles.length === 0) {
+    console.error('A source image file is required.');
+    return false;
+  }
+
   const outputData = computeColourAdjacencies();
   console.log(outputData);
+
+  return true;
 
 }
 
