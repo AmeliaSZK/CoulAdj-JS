@@ -74,6 +74,8 @@ const okButtonClick = (evt) => {
     return false;
   }
 
+  const image = new PixelArray(chosenFiles[0], null, console.error);
+
   const outputData = computeColourAdjacencies();
   console.log(outputData);
 
@@ -165,9 +167,27 @@ class PixelArray {
    */
   constructor(source, options, logError) {
     this.source = source;
-    this.diagonals = options.diagonals;
-    this.includeAlpha = options.includeAlpha;
-    this.logError = logError;
+    this.diagonals = options.diagonals ?? DiagonalsSettings.ADJACENT;
+    this.includeAlpha = options.includeAlpha ?? IncludeAlphaSettings.WHEN_RELEVANT;
+    this.logError = logError ?? console.error;
+    this.imageData = this.extractImageData(this.source);
+
+    console.log('width = ' + this.imageData.width);
+    console.log('height = ' + this.imageData.height);
+  }
+
+  /**
+   * 
+   * @param {File} source 
+   */
+  extractImageData(source) {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    const bitmap = createImageBitmap(source);
+
+    context.drawImage(bitmap, 0, 0);
+
+    return context.getImageData(0, 0, bitmap.height, bitmap.width);
   }
 
 
