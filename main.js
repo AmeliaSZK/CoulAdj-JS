@@ -24,9 +24,6 @@
 //                                           
 // Ascii art from http://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=HOOKS
 
-
-
-
 /** There are 6 buttons on the page:
  *    - Choose File
  *    - Restore defaults
@@ -46,6 +43,17 @@
  * 
  */
 const DEV_MODE = true;
+
+const activateDevMode = () => {
+  console.log('Dev mode activated.');
+
+  const chooseFileButton = document.getElementById('choose-file-button');
+  const outputTextbox = document.getElementById('output-textbox');
+
+  chooseFileButton.attributes.removeNamedItem('required');
+  outputTextbox.attributes.removeNamedItem('readonly');
+  outputTextbox.innerHTML = 'Hello Inner Text\n' + 'Next line?\n' + 'Tabs\t?\tHello';
+}
 
 /** Process the source image and write the output.
  * 
@@ -112,17 +120,6 @@ const main = () => {
 }
 
 document.addEventListener("DOMContentLoaded", main);
-
-const activateDevMode = () => {
-  console.log('Dev mode activated.');
-
-  const chooseFileButton = document.getElementById('choose-file-button');
-  const outputTextbox = document.getElementById('output-textbox');
-
-  chooseFileButton.attributes.removeNamedItem('required');
-  outputTextbox.attributes.removeNamedItem('readonly');
-  outputTextbox.innerHTML = 'Hello Inner Text\n' + 'Next line?\n' + 'Tabs\t?\tHello';
-}
 
 
 //  ██████  ██████  ██    ██ ██       █████  ██████       ██ 
