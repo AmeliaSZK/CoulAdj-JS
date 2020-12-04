@@ -69,7 +69,7 @@ const okButtonClick = (evt) => {
   const chosenFiles = document.getElementById('choose-file-button').files;
   console.log(chosenFiles);
 
-  if(chosenFiles.length === 0) {
+  if (chosenFiles.length === 0) {
     console.error('A source image file is required.');
     return false;
   }
@@ -156,7 +156,7 @@ const IncludeAlphaSettings = {
 
 
 class PixelArray {
-  
+
   /** Creates and initializes a PixelArray from an image File.
    * 
    * @param {File} source The image file to process
@@ -183,19 +183,29 @@ class PixelArray {
   extractImageData(source) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
+    const image = document.createElement('img');
+
+    // We're following the example at:
+    // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap
 
     let height;
     let width;
 
-    // We're following the example at:
-    // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap
-    Promise.all([
-      createImageBitmap(source)
-    ]).then(function(sprites) {
-      context.drawImage(sprites[0], 0, 0);
-      height = sprites[0].height;
-      width = sprites[0].width;
-    });
+    image.onload = function () {
+      Promise.all([
+        createImageBitmap(source)
+      ]).then(function (sprites) {
+        context.drawImage(sprites[0], 0, 0);
+        height = sprites[0].height;
+        width = sprites[0].width;
+      });
+    }
+
+    const reader = new FileReader();
+    reader.onload = function () {
+      image.src = reader.result;
+    }
+    reader.readAsDataURL(source);
 
     return context.getImageData(0, 0, height, width);
   }
