@@ -141,6 +141,40 @@ document.addEventListener("DOMContentLoaded", main);
 //
 // Ascii art from http://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=CoulAdj
 
+const DiagonalsSettings = {
+  ADJACENT: 'adjacent',
+  UNRELATED: 'unrelated'
+}
+
+const IncludeAlphaSettings = {
+  WHEN_PRESENT: 'when-present',
+  WHEN_RELEVANT: 'when-relevant',
+  ALWAYS: 'always'
+}
+
+
+class PixelArray {
+  
+  /** Creates and initializes a PixelArray from an image File.
+   * 
+   * @param {File} source The image file to process
+   * @param {Object} options Optional settings.
+   * @param {string} options.diagonals A value from DiagonalsSettings.
+   * @param {string} options.includeAlpha A value from IncludeAlphaSettings.
+   * @param {Function} logError A function that takes a string in argument. Used to report error messages.
+   */
+  constructor(source, options, logError) {
+    this.source = source;
+    this.diagonals = options.diagonals;
+    this.includeAlpha = options.includeAlpha;
+    this.logError = logError;
+  }
+
+
+
+}
+
+
 
 const computeColourAdjacencies = () => {
   return 'hello';
