@@ -185,6 +185,7 @@ class PixelArray {
     const context = canvas.getContext('2d');
     const image = document.createElement('img');
 
+
     // We're following the example at:
     // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap
 
@@ -193,7 +194,7 @@ class PixelArray {
 
     image.onload = function () {
       Promise.all([
-        createImageBitmap(source)
+        createImageBitmap(image)
       ]).then(function (sprites) {
         context.drawImage(sprites[0], 0, 0);
         height = sprites[0].height;
@@ -201,11 +202,14 @@ class PixelArray {
       });
     }
 
-    const reader = new FileReader();
-    reader.onload = function () {
-      image.src = reader.result;
-    }
-    reader.readAsDataURL(source);
+    // Hardcoding input for testing:
+    image.src = 'tests/small.bmp'
+
+    // const reader = new FileReader();
+    // reader.onload = function () {
+    //   image.src = reader.result;
+    // }
+    // reader.readAsDataURL(source);
 
     // THIS CODE FROZE THE TAB
     // while(reader.readyState !== FileReader.DONE) {
