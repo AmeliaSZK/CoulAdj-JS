@@ -184,9 +184,20 @@ class PixelArray {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
 
-    const bitmap = await createImageBitmap(source);
-    context.drawImage(bitmap, 0, 0);
-    return context.getImageData(0, 0, bitmap.height, bitmap.width);
+    let height;
+    let width;
+
+    // We're following the example at:
+    // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap
+    Promise.all([
+      createImageBitmap(source)
+    ]).then(function(sprites) {
+      context.drawImage(sprites[0], 0, 0);
+      height = sprites[0].height;
+      width = sprites[0].width;
+    });
+
+    return context.getImageData(0, 0, height, width);
   }
 
 
