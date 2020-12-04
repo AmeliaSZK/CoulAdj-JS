@@ -74,7 +74,7 @@ const okButtonClick = (evt) => {
     return false;
   }
 
-  const image = new PixelArray(chosenFiles[0], null, console.error);
+  const image = new PixelArray(chosenFiles[0], {}, console.error);
 
   const outputData = computeColourAdjacencies();
   console.log(outputData);
@@ -183,10 +183,18 @@ class PixelArray {
   extractImageData(source) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    const bitmap = createImageBitmap(source);
+
+    let bitmap;
+
+    // We're following the example at:
+    // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap
+    Promise.all([
+      createImageBitmap(source)
+    ]).then(function(sprites) {
+      imageBmp = sprites[0];
+    });
 
     context.drawImage(bitmap, 0, 0);
-
     return context.getImageData(0, 0, bitmap.height, bitmap.width);
   }
 
