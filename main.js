@@ -207,9 +207,10 @@ class PixelArray {
     }
     reader.readAsDataURL(source);
 
-    while(reader.readyState !== FileReader.DONE) {
-      //wait
-    }
+    // THIS CODE FROZE THE TAB
+    // while(reader.readyState !== FileReader.DONE) {
+    //   //wait
+    // }
 
     return context.getImageData(0, 0, height, width);
   }
