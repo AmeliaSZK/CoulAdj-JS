@@ -172,6 +172,8 @@ class PixelArray {
     this.logError = logError ?? console.error;
     this.imageData = this.extractImageData(this.source);
 
+    // These don't work, but I understand why.
+    // They are executed before the promises in extractImageData are resolved.
     console.log('width = ' + this.imageData.width);
     console.log('height = ' + this.imageData.height);
   }
@@ -184,6 +186,7 @@ class PixelArray {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
 
+    // My shit finally works :')
     const imgData = createImageBitmap(source)
       .then(bitmap => context.drawImage(bitmap, 0, 0))
       .then(() => context.getImageData(0, 0, 8, 8))
