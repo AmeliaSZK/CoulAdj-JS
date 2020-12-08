@@ -183,40 +183,18 @@ class PixelArray {
   extractImageData(source) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    const image = document.createElement('img');
 
-
-    // We're following the example at:
-    // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap
-
-    let height;
-    let width;
-
-    image.onload = function () {
-      Promise.all([
-        createImageBitmap(image)
-      ]).then(function (sprites) {
-        context.drawImage(sprites[0], 0, 0);
-        height = sprites[0].height;
-        width = sprites[0].width;
+    const imgData = createImageBitmap(source)
+      .then(bitmap => context.drawImage(bitmap, 0, 0))
+      .then(() => context.getImageData(0, 0, 8, 8))
+      .then(imgDt => {
+        console.log('height = ' + imgDt.height);
+        console.log('width = ' + imgDt.width);
+        return imgDt;
       });
-    }
 
-    // Hardcoding input for testing:
-    image.src = 'tests/small.bmp'
 
-    // const reader = new FileReader();
-    // reader.onload = function () {
-    //   image.src = reader.result;
-    // }
-    // reader.readAsDataURL(source);
-
-    // THIS CODE FROZE THE TAB
-    // while(reader.readyState !== FileReader.DONE) {
-    //   //wait
-    // }
-
-    return context.getImageData(0, 0, height, width);
+    return imgData;
   }
 
 
