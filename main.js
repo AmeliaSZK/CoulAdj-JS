@@ -188,8 +188,11 @@ class PixelArray {
 
     // My shit finally works :')
     const imgData = createImageBitmap(source)
-      .then(bitmap => context.drawImage(bitmap, 0, 0))
-      .then(() => context.getImageData(0, 0, 9999, 9999)) // WRONG
+      .then(bitmap => {
+        context.drawImage(bitmap, 0, 0);
+        return bitmap;
+      })
+      .then((bitmap) => context.getImageData(0, 0, bitmap.height, bitmap.width))
       .then(imgDt => {
         console.log('height = ' + imgDt.height);
         console.log('width = ' + imgDt.width);
