@@ -170,12 +170,22 @@ class PixelArray {
     this.diagonals = options.diagonals ?? DiagonalsSettings.ADJACENT;
     this.includeAlpha = options.includeAlpha ?? IncludeAlphaSettings.WHEN_RELEVANT;
     this.logError = logError ?? console.error;
+    // All those variables initialized to -1 are given their actual value
+    //  in extractImageData. Yes, I know I (probably) shouldn't be doing it 
+    //  like this.
+    this.height = -1;
+    this.width = -1;
+    this.maxRow = -1;
+    this.maxColumn = -1;
+    this.maxPixel = -1;
     this.imageData = this.extractImageData(this.source);
 
     // These don't work, but I understand why.
     // They are executed before the promises in extractImageData are resolved.
-    console.log('width = ' + this.imageData.width);
-    console.log('height = ' + this.imageData.height);
+    setTimeout(function () {
+      console.log('constructor width = ' + this.imageData.width);
+      console.log('constructor height = ' + this.imageData.height);
+    }, 0);
   }
 
   /**
@@ -194,9 +204,20 @@ class PixelArray {
         return bitmap;
       })
       .then((bitmap) => context.getImageData(0, 0, bitmap.height, bitmap.width))
-      .then(imgDt => {
-        console.log('height = ' + imgDt.height);
-        console.log('width = ' + imgDt.width);
+      .then(function(imgDt) {
+        console.log('imgDt.height = ' + imgDt.height);
+        console.log('imgDt.width = ' + imgDt.width);
+        this.height = imgDt.height;
+        this.width = imgDt.width;
+        this.maxRow = this.height - 1;
+        this.maxColumn = this.width - 1;
+        this.maxPixel = this.height * this.width - 1;
+        console.log('this.height = ' + this.height);
+        console.log('this.width = ' + this.width);
+        console.log('height = ' + height);
+        console.log('width = ' + width);
+        
+
         return imgDt;
       });
 
