@@ -199,8 +199,6 @@ class PixelArray {
       })
       .then((bitmap) => context.getImageData(0, 0, bitmap.height, bitmap.width))
       .then(imgDt => {
-        console.log('imgDt.height = ' + imgDt.height);
-        console.log('imgDt.width = ' + imgDt.width);
         this.height = imgDt.height;
         this.width = imgDt.width;
         this.maxRow = this.height - 1;
@@ -208,8 +206,9 @@ class PixelArray {
         this.maxPixel = this.height * this.width - 1;
         console.log('this.height = ' + this.height);
         console.log('this.width = ' + this.width);
-        console.log('height = ' + height);
-        console.log('width = ' + width);
+        console.log('this.maxRow = ' + this.maxRow);
+        console.log('this.maxColumn = ' + this.maxColumn);
+        console.log('this.maxPixel = ' + this.maxPixel);
         
 
         return imgDt;
