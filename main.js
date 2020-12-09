@@ -75,9 +75,7 @@ const okButtonClick = (evt) => {
   }
 
   const image = new PixelArray(chosenFiles[0], {}, console.error);
-
-  const outputData = computeColourAdjacencies();
-  console.log(outputData);
+  setTimeout(console.log, 0, 'setTimeout in okButtonClick');
 
   return true;
 
@@ -210,7 +208,7 @@ class PixelArray {
         console.log('this.maxRow = ' + this.maxRow);
         console.log('this.maxColumn = ' + this.maxColumn);
         console.log('this.maxPixel = ' + this.maxPixel);
-        setTimeout(this.processPixel(0), 0);
+        setTimeout(this.processPixel, 0, 0);
         return imgDt;
       });
 
@@ -222,7 +220,7 @@ class PixelArray {
    * @param {Number} pixel Index of the pixel to process
    */
   processPixel(pixel) {
-    console.log('Starting pixel ' + pixel);
+    //console.log('Entered pixel ' + pixel);
 
     // # Stop condition(s) #
     if(pixel > this.maxPixel) {
@@ -234,9 +232,10 @@ class PixelArray {
     // Uncaught (in promise) RangeError: Maximum call stack size exceeded
     // But we got from pixel 0 to pixel 9690, so we are indeed incrementing :)
     
-    setTimeout(this.processPixel(pixel + 1), 0);
+    setTimeout(this.processPixel, 0, pixel + 1);
     // HOLY SHIT THIS IS BLOCKING THE EVENT LOOP!?!
     // The tab in edge was unresponsive :/
+    console.log('Starting pixel ' + pixel);
 
   }
 
