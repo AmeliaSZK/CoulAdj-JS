@@ -143,13 +143,6 @@ document.addEventListener("DOMContentLoaded", main);
 //
 // Ascii art from http://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=CoulAdj
 
-/**
- * 
- * @param {Function} fn The function to queue with setTimeout(fn, 0)
- */
-function queue(fn) {
-  setTimeout(fn, 1000);
-}
 
 const DiagonalsSettings = {
   ADJACENT: 'adjacent',
@@ -217,7 +210,7 @@ class PixelArray {
         console.log('this.maxRow = ' + this.maxRow);
         console.log('this.maxColumn = ' + this.maxColumn);
         console.log('this.maxPixel = ' + this.maxPixel);
-        queue(this.processPixel(0));
+        setTimeout(this.processPixel(0), 0);
         return imgDt;
       });
 
@@ -233,7 +226,7 @@ class PixelArray {
 
     // # Stop condition(s) #
     if(pixel > this.maxPixel) {
-      queue(this.stringifyWhole);
+      setTimeout(this.stringifyWhole, 0);
       return;
     }
 
@@ -241,7 +234,7 @@ class PixelArray {
     // Uncaught (in promise) RangeError: Maximum call stack size exceeded
     // But we got from pixel 0 to pixel 9690, so we are indeed incrementing :)
     
-    queue(this.processPixel(pixel + 1));
+    setTimeout(this.processPixel(pixel + 1), 0);
     // HOLY SHIT THIS IS BLOCKING THE EVENT LOOP!?!
     // The tab in edge was unresponsive :/
 
