@@ -237,7 +237,10 @@ class PixelArray {
       return;
     }
 
-    queue(processPixel(pixel + 1));
+    // This threw a stack overflow?!?
+    // Uncaught (in promise) RangeError: Maximum call stack size exceeded
+    // But we got from pixel 0 to pixel 9690, so we are indeed incrementing :)
+    queue(this.processPixel(pixel + 1));
 
   }
 
