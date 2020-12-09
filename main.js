@@ -208,7 +208,7 @@ class PixelArray {
         console.log('this.maxRow = ' + this.maxRow);
         console.log('this.maxColumn = ' + this.maxColumn);
         console.log('this.maxPixel = ' + this.maxPixel);
-        setTimeout(this.processPixel, 0, 0);
+        setTimeout(() => { this.processPixel(0) }, 0);
         return imgDt;
       });
 
@@ -220,10 +220,10 @@ class PixelArray {
    * @param {Number} pixel Index of the pixel to process
    */
   processPixel(pixel) {
-    console.log('Entered pixel ' + pixel);
+    //console.log('Entered pixel ' + pixel);
 
     // # Stop condition(s) #
-    if(pixel > this.maxPixel) {
+    if (pixel > this.maxPixel) {
       setTimeout(this.stringifyWhole, 0);
       return;
     }
@@ -231,8 +231,8 @@ class PixelArray {
     // This threw a stack overflow?!?
     // Uncaught (in promise) RangeError: Maximum call stack size exceeded
     // But we got from pixel 0 to pixel 9690, so we are indeed incrementing :)
-    
-    setTimeout(this.processPixel, 0, pixel + 1);
+
+    setTimeout(() => { this.processPixel(pixel + 1) }, 0);
     // HOLY SHIT THIS IS BLOCKING THE EVENT LOOP!?!
     // The tab in edge was unresponsive :/
     console.log('Starting pixel ' + pixel);
