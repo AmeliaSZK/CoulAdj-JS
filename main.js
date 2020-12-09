@@ -228,11 +228,14 @@ class PixelArray {
       return;
     }
 
-    setTimeout(() => { this.processPixel(pixel + 1) }, 0);
+    setTimeout(() => { this.processPixel(pixel + 1000) }, 0);
 
-    // I think logging every pixel might be overwhelming the console??
-    if (pixel % 1000 === 0 || pixel === this.maxPixel) {
-      console.log('Starting pixel ' + pixel);
+
+    for (let i = 0; i < 1000; i++) {
+      // I think logging every pixel might be overwhelming the console??
+      if (pixel % 100 === 0 || pixel === this.maxPixel) {
+        console.log('Starting pixel ' + pixel);
+      }
     }
 
   }
