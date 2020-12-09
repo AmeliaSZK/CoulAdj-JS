@@ -231,6 +231,18 @@ class PixelArray {
   processPixel(pixel) {
     console.log('Starting pixel ' + pixel);
 
+    // # Stop condition(s) #
+    if(pixel > this.maxPixel) {
+      queue(this.stringifyWhole);
+      return;
+    }
+
+    queue(processPixel(pixel + 1));
+
+  }
+
+  stringifyWhole() {
+    console.log('Starting stringifyWhole');
   }
 
 
