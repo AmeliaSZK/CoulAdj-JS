@@ -230,16 +230,6 @@ class PixelArray {
    */
   processPixel(pixel) {
     console.log('Starting pixel ' + pixel);
-    console.log('this.height = ' + this.height);
-    console.log('this.width = ' + this.width);
-    console.log('this.maxRow = ' + this.maxRow);
-    console.log('this.maxColumn = ' + this.maxColumn);
-    console.log('this.maxPixel = ' + this.maxPixel);
-    console.log('height = ' + height);
-    console.log('width = ' + width);
-    console.log('maxRow = ' + maxRow);
-    console.log('maxColumn = ' + maxColumn);
-    console.log('maxPixel = ' + maxPixel);
 
   }
 
