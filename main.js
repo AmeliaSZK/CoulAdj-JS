@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", main);
  * @param {Function} fn The function to queue with setTimeout(fn, 0)
  */
 function queue(fn) {
-  setTimeout(fn, 0);
+  setTimeout(fn, 1000);
 }
 
 const DiagonalsSettings = {
@@ -241,7 +241,7 @@ class PixelArray {
     // Uncaught (in promise) RangeError: Maximum call stack size exceeded
     // But we got from pixel 0 to pixel 9690, so we are indeed incrementing :)
     
-    // queue(this.processPixel(pixel + 1));
+    queue(this.processPixel(pixel + 1));
     // HOLY SHIT THIS IS BLOCKING THE EVENT LOOP!?!
     // The tab in edge was unresponsive :/
 
