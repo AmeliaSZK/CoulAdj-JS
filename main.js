@@ -240,7 +240,10 @@ class PixelArray {
     // This threw a stack overflow?!?
     // Uncaught (in promise) RangeError: Maximum call stack size exceeded
     // But we got from pixel 0 to pixel 9690, so we are indeed incrementing :)
-    queue(this.processPixel(pixel + 1));
+    
+    // queue(this.processPixel(pixel + 1));
+    // HOLY SHIT THIS IS BLOCKING THE EVENT LOOP!?!
+    // The tab in edge was unresponsive :/
 
   }
 
