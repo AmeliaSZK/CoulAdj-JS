@@ -143,6 +143,14 @@ document.addEventListener("DOMContentLoaded", main);
 //
 // Ascii art from http://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=CoulAdj
 
+/**
+ * 
+ * @param {Function} fn The function to queue with setTimeout(fn, 0)
+ */
+function queue(fn) {
+  setTimeout(fn, 0);
+}
+
 const DiagonalsSettings = {
   ADJACENT: 'adjacent',
   UNRELATED: 'unrelated'
