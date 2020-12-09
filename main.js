@@ -220,7 +220,7 @@ class PixelArray {
    * @param {Number} pixel Index of the pixel to process
    */
   processPixel(pixel) {
-    //console.log('Entered pixel ' + pixel);
+    console.log('Entered pixel ' + pixel);
 
     // # Stop condition(s) #
     if(pixel > this.maxPixel) {
