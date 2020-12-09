@@ -180,12 +180,6 @@ class PixelArray {
     this.maxPixel = -1;
     this.imageData = this.extractImageData(this.source);
 
-    // These don't work, but I understand why.
-    // They are executed before the promises in extractImageData are resolved.
-    setTimeout(function () {
-      console.log('constructor width = ' + this.imageData.width);
-      console.log('constructor height = ' + this.imageData.height);
-    }, 0);
   }
 
   /**
@@ -204,7 +198,7 @@ class PixelArray {
         return bitmap;
       })
       .then((bitmap) => context.getImageData(0, 0, bitmap.height, bitmap.width))
-      .then(function(imgDt) {
+      .then(imgDt => {
         console.log('imgDt.height = ' + imgDt.height);
         console.log('imgDt.width = ' + imgDt.width);
         this.height = imgDt.height;
