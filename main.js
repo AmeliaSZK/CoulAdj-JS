@@ -234,7 +234,7 @@ class PixelArray {
     for (let i = 0; i < 1000; i++) {
       // I think logging every pixel might be overwhelming the console??
       if (pixel % 100 === 0 || pixel === this.maxPixel) {
-        console.log('Starting pixel ' + pixel);
+        console.log('Starting pixel ' + pixel + i);
       }
     }
 
