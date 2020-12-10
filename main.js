@@ -208,37 +208,50 @@ class PixelArray {
         console.log('this.maxRow = ' + this.maxRow);
         console.log('this.maxColumn = ' + this.maxColumn);
         console.log('this.maxPixel = ' + this.maxPixel);
-        setTimeout(() => { this.processPixel(0) }, 0);
+        setTimeout(this.startProcessingPixels, 0);
         return imgDt;
       });
 
     return imgData;
   }
 
+  /** Decides how many pixels per batch to process, and starts the processing.
+   * 
+   */
+  startProcessingPixels() {
+    const batchSize = 1 * 1000 * 1000; // Written like this for clarity.
+
+    const firstIndex = 0; // To avoid confusion with the 0 delay below
+    setTimeout(this.processManyPixels, 0, firstIndex, batchSize);
+  }
+
   /**
    * 
    * @param {Number} pixel Index of the pixel to process
    */
-  processPixel(pixel) {
-    //console.log('Entered pixel ' + pixel);
-    const BATCH_SIZE = 1 * 1000 * 1000;
+  processManyPixels(startPixel, nbPixels) {
 
     // # Stop condition(s) #
-    if (pixel > this.maxPixel) {
+    if (startPixel > this.maxPixel) {
       setTimeout(this.stringifyWhole, 0);
       return;
     }
 
-    setTimeout(() => { this.processPixel(pixel + BATCH_SIZE) }, 0);
+    // # Initializations #
+    const naiveLastPixel = startPixel + nbPixels - 1;
+    const lastPixel = naiveLastPixel <= this.maxPixel ? naiveLastPixel : this.maxPixel;
 
+    // # Queue the next batch #
+    setTimeout(this.processManyPixels, 0, lastPixel + 1, nbPixels);
 
-    for (let i = 0; i < BATCH_SIZE && pixel + i <= this.maxPixel; i++) {
-      // I think logging every pixel might be overwhelming the console??
-      let currentPixel = pixel + i;
-      if (currentPixel % (BATCH_SIZE) === 0 || currentPixel === this.maxPixel) {
-        console.log('Starting pixel ' + currentPixel.toLocaleString());
-      }
+    // # Process the current batch #
+    console.log('Starting pixel ' + startPixel.toLocaleString());
+    for (let pixel = startPixel; pixel <= lastPixel; pixel++) {
+      this.processOnePixel(pixel);
     }
+  }
+
+  processOnePixel(pixel) {
 
   }
 
