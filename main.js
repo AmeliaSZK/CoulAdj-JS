@@ -272,7 +272,7 @@ class PixelArray {
     const pixelRow = this.rowFromIndex(pixel);
     const pixelColumn = this.columnFromIndex(pixel);
 
-    console.log(`pixel [${pixelRow}, ${pixelColumn}] : ${pixelColour}`);
+    // console.log(`pixel [${pixelRow}, ${pixelColumn}] : ${pixelColour}`);
 
 
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, -1);
@@ -324,13 +324,13 @@ class PixelArray {
     const neighIndex = this.indexFromRowColumn(neighRow, neighColumn);
     const neighColour = this.colourFromIndex(neighIndex);
 
-    console.log(`\t neigh [${neighRow}, ${neighColumn}] : ${neighColour}`);
+    // console.log(`\t neigh [${neighRow}, ${neighColumn}] : ${neighColour}`);
 
     if(Colour.same(pixelColour, neighColour)) {
       return;
     }
 
-    console.log(`\t\t sending ${pixelColour} & ${neighColour}`);
+    // console.log(`\t\t sending ${pixelColour} & ${neighColour}`);
     this.register(pixelColour, neighColour);
   }
 
@@ -344,7 +344,7 @@ class PixelArray {
     const neighArray = Array.from(neighColour);
     const adjacencyArray = pixelArray.concat(neighArray);
     const adjacency = Uint8ClampedArray.from(adjacencyArray);
-    console.log(`adjacency = ${adjacency}`);
+    // console.log(`adjacency = ${adjacency}`);
     this.adjacencies.add(adjacency);
   }
 
