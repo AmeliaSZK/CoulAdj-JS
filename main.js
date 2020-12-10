@@ -367,8 +367,10 @@ class PixelArray {
   stringify() {
     console.log('Starting stringifyWhole');
 
+    console.log(this.adjacencies);
     const adjacencies = Array.from(this.adjacencies.keys());
     adjacencies.sort(Colour.compareAdjacency);
+    console.log(adjacencies);
 
     const includeAlpha = this.decideAlpha();
 
