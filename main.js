@@ -307,9 +307,31 @@ class PixelArray {
     const extractionTest = Array.from(this.adjacencies.keys());
     extractionTest.sort(Colour.compareAdjacency);
     console.log(extractionTest);
+
+    const adjacencies = Array.from(this.adjacencies.keys());
+    adjacencies.sort(Colour.compareAdjacency);
   }
 
 }
+
+/** DO NOT CHANGE THESE HEADERS
+ * 
+ * These headers are part of the API defined in the Readme.
+ * They MUST NOT be changed unless the major version number is incremented.
+ * 
+ * The outputted files are meant to be parsed by programs that rely on
+ *    hardcoded column names.
+ * 
+ * THE NAMES OF THE COLUMNS, AND THE ORDER IN WHICH THEY ARE WRITTEN,
+ *    ARE THE MOST CRITICAL PART OF THE API.
+ * 
+ * DO NOT CHANGE
+ * 
+ * DO NOT CHANGE
+ */
+const RBG_HEADER = ['r', 'g', 'b', 'adj_r', 'adj_g', 'adj_b'].join('\t');
+const RBGALPHA_HEADER = ['r', 'g', 'b', 'a', 'adj_r', 'adj_g', 'adj_b', 'adj_a'].join('\t');
+// RgbAplha instead of Rgba to avoid unnoticed typos.
 
 class Colour {
 
