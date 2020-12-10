@@ -208,7 +208,7 @@ class PixelArray {
         console.log('this.maxRow = ' + this.maxRow);
         console.log('this.maxColumn = ' + this.maxColumn);
         console.log('this.maxPixel = ' + this.maxPixel);
-        setTimeout(this.startProcessingPixels, 0);
+        this.startProcessingPixels();
         return imgDt;
       });
 
@@ -219,10 +219,11 @@ class PixelArray {
    * 
    */
   startProcessingPixels() {
+    console.log('Entered startProcessingPixels');
     const batchSize = 1 * 1000 * 1000; // Written like this for clarity.
 
     const firstIndex = 0; // To avoid confusion with the 0 delay below
-    setTimeout(this.processManyPixels, 0, firstIndex, batchSize);
+    setTimeout(this.processManyPixels(firstIndex, batchSize), 0);
   }
 
   /**
@@ -230,6 +231,7 @@ class PixelArray {
    * @param {Number} pixel Index of the pixel to process
    */
   processManyPixels(startPixel, nbPixels) {
+    console.log('Entered processManyPixels. start = ' + startPixel + ', nb = ' + nbPixels);
 
     // # Stop condition(s) #
     if (startPixel > this.maxPixel) {
@@ -242,7 +244,7 @@ class PixelArray {
     const lastPixel = naiveLastPixel <= this.maxPixel ? naiveLastPixel : this.maxPixel;
 
     // # Queue the next batch #
-    setTimeout(this.processManyPixels, 0, lastPixel + 1, nbPixels);
+    setTimeout(this.processManyPixels(lastPixel + 1, nbPixels), 0);
 
     // # Process the current batch #
     console.log('Starting pixel ' + startPixel.toLocaleString());
