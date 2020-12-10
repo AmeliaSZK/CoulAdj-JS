@@ -265,8 +265,8 @@ class PixelArray {
         console.log('this.maxColumn = ' + this.maxColumn);
         console.log('this.maxPixel = ' + this.maxPixel);
         this.data = imgDt.data;
-        this.showData();
-        //this.startProcessingPixels();
+        //this.showData();
+        this.startProcessingPixels();
         return imgDt;
       });
 
