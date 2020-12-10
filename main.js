@@ -215,12 +215,14 @@ class PixelArray {
         this.maxRow = this.height - 1;
         this.maxColumn = this.width - 1;
         this.maxPixel = this.height * this.width - 1;
+        this.maxIndex = this.maxPixel;
         console.log('this.height = ' + this.height);
         console.log('this.width = ' + this.width);
         console.log('this.maxRow = ' + this.maxRow);
         console.log('this.maxColumn = ' + this.maxColumn);
         console.log('this.maxPixel = ' + this.maxPixel);
         this.data = imgDt.data;
+        this.printData();
         this.startProcessingPixels();
         return imgDt;
       });
@@ -431,6 +433,27 @@ class PixelArray {
     // TODO: Fix this monstrous hack
     const outputTextbox = document.getElementById('output-textbox');
     outputTextbox.innerHTML = this.results;
+  }
+
+  printData() {
+    const dataLogArray = new Array();
+    const dataHeader = ['pixel','row','column'].join(COLUMN_SEPARATOR) + COLUMN_SEPARATOR + RBGALPHA_HEADER;
+    dataLogArray.push(dataHeader);
+    // "pixel" implies "pixelIndex"
+
+    for(let index = 0; index <= this.maxIndex; index++){
+      const row = this.rowFromIndex(index);
+      const column = this.columnFromIndex(index);
+      const colour = colourFromIndex(index);
+      const entryArray = [index, row, column].concat(colour);
+      const entry = entryArray.join(COLUMN_SEPARATOR);
+      dataLogArray.push(entry);
+    }
+
+    const dataLog = dataLogArray.join(COLUMN_SEPARATOR);
+
+    console.log('dataLog:');
+    console.log(dataLog);
   }
 
 }
