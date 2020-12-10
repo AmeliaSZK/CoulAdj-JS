@@ -270,6 +270,26 @@ class PixelArray {
     console.log('this.maxColumn = ' + this.maxColumn);
     console.log('this.maxPixel = ' + this.maxPixel);
     console.log(this.adjacencies);
+
+    const col1 = [0, 32, 64, 128];
+    const col2 = [0,  0,  0, 255];
+    const col3 = [0, 32, 64, 255];
+    const col4 = [0, 32,  0, 255];
+    const col5 = [0, 64,  0, 255];
+    const adj1 = [...col1, ...col2];
+    const adj2 = [...col3, ...col2];
+    const adj3 = [...col3, ...col4];
+    const adj4 = [...col5, ...col2];
+
+    console.log('adj 1 = ' + adj1.toString());
+    console.log('adj 2 = ' + adj2.toString());
+    console.log('adj 3 = ' + adj3.toString());
+    console.log('adj 4 = ' + adj4.toString());
+
+    this.adjacencies.add(adj4);
+    this.adjacencies.add(adj1);
+    this.adjacencies.add(adj3);
+    this.adjacencies.add(adj2);
   }
 
 
