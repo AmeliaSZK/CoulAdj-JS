@@ -504,15 +504,24 @@ class Colour {
   static fromNumber(number) {
     const colourArray = new Array();
     let n = number;
+    console.log('n = ' + n);
     colourArray.push(n & 0xff);
+    console.log('colourArray = ' + colourArray.toString());
+    console.log('n = ' + n);
     n >>> 8;
     colourArray.push(n & 0xff);
+    console.log('colourArray = ' + colourArray.toString());
+    console.log('n = ' + n);
     n >>> 8;
     colourArray.push(n & 0xff);
+    console.log('colourArray = ' + colourArray.toString());
+    console.log('n = ' + n);
     n >>> 8;
     colourArray.push(n & 0xff);
-    console.log(colourArray.toString());
+    console.log('colourArray = ' + colourArray.toString());
+    console.log('n = ' + n);
     colourArray.reverse();
+    console.log('colourArray post-reverse = ' + colourArray.toString());
 
     return Uint8ClampedArray.from(colourArray);
   }
