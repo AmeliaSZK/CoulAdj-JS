@@ -242,7 +242,7 @@ class PixelArray {
 
     // My shit finally works :')
     // We even got the correct height and width now :')
-    const imgData = createImageBitmap(source)
+    const imgData = createImageBitmap(source, {premultiplyAlpha: 'none'})
       .then(bitmap => {
         context.drawImage(bitmap, 0, 0);
         return bitmap;
