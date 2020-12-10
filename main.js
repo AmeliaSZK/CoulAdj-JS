@@ -459,6 +459,10 @@ const RBGALPHA_HEADER = ['r', 'g', 'b', 'a', 'adj_r', 'adj_g', 'adj_b', 'adj_a']
  * Vocabulary that YOU, THE CODER, is expected to know:
  * Colour       A Uint8ClampedArray of 4 elements organized as such: [r, g, b, a]
  * Adjacency    A Uint8ClampedArray of 8 elements organized as such: [r, g, b, a, adj_r, adj_g, adj_b, adj_a]
+ * Same         The "same" colour means that the *distinct* objects `a` and `b`
+ *                have the same values in the same positions, and hence will 
+ *                produce `true` for `Colour.same(a,b)` 
+ *                and     `0`    for `Colour.compare(a,b)`.
  * 
  * These functions were designed with *speed* in mind, so don't expect them to accept,
  * tolerate, or even be correct if you send them any other data types or 
@@ -468,6 +472,31 @@ const RBGALPHA_HEADER = ['r', 'g', 'b', 'a', 'adj_r', 'adj_g', 'adj_b', 'adj_a']
 class Colour {
 
   constructor() { }
+
+  /** Converts a colour into a number that can be converted back to the same
+   * colour with `Colour.fromNumber()`.
+   * 
+   * @param {Uint8ClampedArray} colour 
+   */
+  static toNumber(colour) {
+    let n = 0;
+    n += colour[0];
+    n <<= 8;
+    n += colour[1];
+    n <<= 8;
+    n += colour[2];
+    n <<= 8;
+    n += colour[3];
+    return n;
+  }
+
+  /** Converts a number computed by `Colour.toNumber` back to the same colour.
+   * 
+   * @param {Number} number 
+   */
+  static fromNumber(number) {
+
+  }
 
   /** Returns `true` if both colours are the same.
    * 
