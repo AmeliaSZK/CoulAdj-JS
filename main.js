@@ -299,7 +299,8 @@ class PixelArray {
   }
 
   colourFromIndex(index) {
-    return this.data.slice(index, index + 4);
+    const offset = index * 4;
+    return this.data.slice(offset, offset + 4);
   }
 
   rowFromIndex(index) {
