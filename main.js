@@ -262,6 +262,16 @@ class PixelArray {
 
   }
 
+  /** Decides if the alpha column should be included.
+   * 
+   * Currently always return true because the available image libraries don't
+   * say if the original image had an alpha channel.
+   * 
+   */
+  includeAlpha() {
+    return true;
+  }
+
   stringifyWhole() {
     console.log('Starting stringifyWhole');
     console.log('this.height = ' + this.height);
