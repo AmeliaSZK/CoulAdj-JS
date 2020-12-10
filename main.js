@@ -345,7 +345,7 @@ class PixelArray {
     const adjacencyArray = pixelArray.concat(neighArray);
     const adjacency = Uint8ClampedArray.from(adjacencyArray);
     // console.log(`adjacency = ${adjacency}`);
-    this.adjacencies.add(adjacency);
+    this.adjacencies.add(Colour.bigIntFromAdjacency(adjacency));
   }
 
 
@@ -368,7 +368,7 @@ class PixelArray {
     console.log('Starting stringifyWhole');
 
     console.log(this.adjacencies);
-    const adjacencies = Array.from(this.adjacencies.keys());
+    const adjacencies = Array.from(this.adjacencies.keys(), Colour.adjacencyFromBigInt);
     adjacencies.sort(Colour.compareAdjacency);
     console.log(adjacencies);
 
@@ -445,6 +445,32 @@ const RBGALPHA_HEADER = ['r', 'g', 'b', 'a', 'adj_r', 'adj_g', 'adj_b', 'adj_a']
 class Colour {
 
   constructor() { }
+
+  /**
+   * 
+   * @param {Uint8ClampedArray} adjacency 
+   */
+  static bigIntFromAdjacency(adjacency){
+    let x = 0n;
+    adjacency.forEach(component => {
+      x <<= 8;
+      x += component;
+    });
+    return x;
+  }
+
+  /**
+   * 
+   * @param {BigInteger} x 
+   */
+  static adjacencyFromBigInt(x){
+    const adjArray = new Array(8);
+    for(let i = 7; i >=0; i--){
+      adjArray[i] = x & 0x00000000000000FF;
+      x >>= 8;
+    }
+    return Uint8ClampedArray.from(adjArray);
+  }
 
   /** Returns `true` if both colours are the same.
    * 
