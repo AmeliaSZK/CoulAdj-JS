@@ -179,9 +179,9 @@ class PixelArray {
     this.maxColumn = -1;
     this.maxPixel = -1;
     this.data;
-    this.imageData = this.extractImageData(this.source);
     this.adjacencies = new Set();
     this.results = '';
+    this.imageData = this.extractImageData(this.source);
 
   }
 
@@ -272,6 +272,9 @@ class PixelArray {
     const pixelRow = this.rowFromIndex(pixel);
     const pixelColumn = this.columnFromIndex(pixel);
 
+    console.log(`pixel [${pixelRow}, ${pixelColumn}] : ${pixelColour}`);
+
+
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, -1);
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1,  0);
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1,  1);
@@ -321,15 +324,26 @@ class PixelArray {
     const neighIndex = this.indexFromRowColumn(neighRow, neighColumn);
     const neighColour = this.colourFromIndex(neighIndex);
 
+    console.log(`\t neigh [${neighRow}, ${neighColumn}] : ${neighColour}`);
+
     if(Colour.same(pixelColour, neighColour)) {
       return;
     }
 
+    console.log(`\t\t sending ${pixelColour} & ${neighColour}`);
     this.register(pixelColour, neighColour);
   }
 
+  /**
+   * 
+   * @param {Uint8ClampedArray} pixelColour 
+   * @param {Uint8ClampedArray} neighColour 
+   */
   register(pixelColour, neighColour) {
-    const adjacency = new Uint8ClampedArray(...pixelColour, ...neighColour);
+    const adjacency = Uint8ClampedArray.from(pixelColour);
+    neighColour.forEach(component => adjacency.push(component));
+
+    console.log(`adjacency = ${adjacency}`);
     this.adjacencies.add(adjacency);
   }
 
