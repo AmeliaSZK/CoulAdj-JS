@@ -261,8 +261,8 @@ class PixelArray {
         console.log('this.maxColumn = ' + this.maxColumn);
         console.log('this.maxPixel = ' + this.maxPixel);
         this.data = imgDt.data;
-        //this.printData();
-        this.startProcessingPixels();
+        this.showData();
+        //this.startProcessingPixels();
         return imgDt;
       });
 
@@ -480,13 +480,20 @@ class PixelArray {
     outputTextbox.innerHTML = this.results;
   }
 
-  printData() {
+  showData() {
+    const outputTextbox = document.getElementById('output-textbox');
+    outputTextbox.innerHTML = this.stringifyData(0, 10 * 1000);
+  }
+
+  stringifyData(start, end) {
+    const firstIndex = start ?? 0;
+    const lastIndex = end ?? this.maxIndex;
     const dataLogArray = new Array();
     const dataHeader = ['p', 'x', 'y', 'r', 'g', 'b', 'a'].join(COLUMN_SEPARATOR);
     dataLogArray.push(dataHeader);
     // "pixel" implies "pixelIndex"
 
-    for (let index = 0; index <= this.maxIndex; index++) {
+    for (let index = firstIndex; index <= lastIndex; index++) {
       const y = this.rowFromIndex(index);
       const x = this.columnFromIndex(index);
       const colour = Array.from(this.colourFromIndex(index));
@@ -497,8 +504,7 @@ class PixelArray {
 
     const dataLog = dataLogArray.join('\n');
 
-    console.log('dataLog:');
-    console.log(dataLog);
+    return dataLog;
   }
 
 }
