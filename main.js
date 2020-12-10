@@ -187,7 +187,7 @@ class PixelArray {
     this.maxColumn = -1;
     this.maxPixel = -1;
     this.data;
-    this.adjacencies = new Set();
+    this.adjacencies = new Map();
     this.results = '';
     this.imageData = this.extractImageData(this.source);
 
@@ -348,12 +348,15 @@ class PixelArray {
    * @param {Uint8ClampedArray} neighColour 
    */
   register(pixelColour, neighColour) {
-    const pixelArray = Array.from(pixelColour);
-    const neighArray = Array.from(neighColour);
-    const adjacencyArray = pixelArray.concat(neighArray);
-    const adjacency = Uint8ClampedArray.from(adjacencyArray);
-    // console.log(`adjacency = ${adjacency}`);
-    this.adjacencies.add(adjacency);
+    const pixelColourNumber = Colour.toNumber(pixelColour);
+    const neighColourNumber = Colour.toNumber(neighColour);
+
+    // If pixelColour not in the Map, create the entry and create its Set
+    if(!this.adjacencies.has(pixelColourNumber)){
+      this.adjacencies.set(pixelColourNumber, new Set());
+    }
+
+    this.adjacencies.get(pixelColourNumber).add(neighColourNumber);
   }
 
 
@@ -373,11 +376,31 @@ class PixelArray {
   }
 
   stringify() {
-    console.log('Starting stringifyWhole');
+    console.log('Starting stringify');
 
+    console.log('this.adjacencies:');
     console.log(this.adjacencies);
-    const adjacencies = Array.from(this.adjacencies.keys());
-    adjacencies.sort(Colour.compareAdjacency);
+
+    const coloursAsNumber = new Array(this.adjacencies.keys());
+
+    coloursAsNumber.sort(Colour.compareNumbers);
+
+    const adjacencies = new Array();
+
+    for(colourNumber in coloursAsNumber) {
+      const adjacentsAsNumber = new Array(this.adjacencies.get(colourNumber));
+
+      adjacentsAsNumber.sort(Colour.compareNumbers);
+
+      const colour = Colour.fromNumber(colourNumber);
+      for(adjacentNumber in adjacentsNumber) {
+        const adjacent = Colour.fromNumber(adjacentNumber);
+        const adjacency = Colour.coloursToAdjacency(colour, adjacent);
+        adjacencies.push(adjacency);
+      }
+    }
+
+    console.log('adjacencies in stringify:');
     console.log(adjacencies);
 
     const includeAlpha = this.decideAlpha();
@@ -480,6 +503,29 @@ const RBGALPHA_HEADER = ['r', 'g', 'b', 'a', 'adj_r', 'adj_g', 'adj_b', 'adj_a']
 class Colour {
 
   constructor() { }
+
+  /** Concatenates two colours to a new adjacency.
+   * 
+   * @param {Uint8ClampedArray} a 
+   * @param {Uint8ClampedArray} b 
+   */
+  static coloursToAdjacency(a, b) {
+    // Code from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/set
+    const buffer = new ArrayBuffer(8);
+    const adjacency = new Uint8ClampedArray(buffer);
+    adjacency.set(a, 0);
+    adjacency.set(b, 4);
+    return adjacency;
+  }
+
+  /** Compares two numbers computed by `Colour.toNumber`
+   * 
+   * @param {Number} a 
+   * @param {Number} b 
+   */
+  static compareNumbers(a, b) {
+    return Colour.compare(Colour.fromNumber(a), Colour.fromNumber(b));
+  }
 
   /** Converts a colour into a number that can be converted back to the same
    * colour with `Colour.fromNumber()`.
