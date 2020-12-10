@@ -276,15 +276,15 @@ class PixelArray {
 
 
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, -1);
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1,  0);
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1,  1);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, 0);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, 1);
 
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, 0, -1);
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 0,  1);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 0, 1);
 
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1, -1);
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1,  0);
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1,  1);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1, 0);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1, 1);
 
   }
 
@@ -317,7 +317,7 @@ class PixelArray {
     const neighColumn = pixelColumn + columnOffset;
 
     // Verify that the neighbour exists.
-    if(!this.validRowColumn(neighRow, neighColumn)){
+    if (!this.validRowColumn(neighRow, neighColumn)) {
       return;
     }
 
@@ -326,7 +326,7 @@ class PixelArray {
 
     // console.log(`\t neigh [${neighRow}, ${neighColumn}] : ${neighColour}`);
 
-    if(Colour.same(pixelColour, neighColour)) {
+    if (Colour.same(pixelColour, neighColour)) {
       return;
     }
 
@@ -461,7 +461,7 @@ const RBGALPHA_HEADER = ['r', 'g', 'b', 'a', 'adj_r', 'adj_g', 'adj_b', 'adj_a']
  * Adjacency    A Uint8ClampedArray of 8 elements organized as such: [r, g, b, a, adj_r, adj_g, adj_b, adj_a]
  * 
  * These functions were designed with *speed* in mind, so don't expect them to accept,
- * tolerate, or give correct results if you send them any other data types or 
+ * tolerate, or even be correct if you send them any other data types or 
  * formats unless explicitely noted.
  * 
  */
