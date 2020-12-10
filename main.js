@@ -400,7 +400,7 @@ class PixelArray {
 
       const colour = Colour.fromNumber(colourNumber);
 
-      adjacentsNumber.forEach(adjacentNumber => {
+      adjacentsAsNumber.forEach(adjacentNumber => {
         const adjacent = Colour.fromNumber(adjacentNumber);
         const adjacency = Colour.coloursToAdjacency(colour, adjacent);
         adjacencies.push(adjacency);
