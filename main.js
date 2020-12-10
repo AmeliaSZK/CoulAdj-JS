@@ -453,8 +453,8 @@ class Colour {
   static bigIntFromAdjacency(adjacency){
     let x = 0n;
     adjacency.forEach(component => {
-      x <<= 8;
-      x += component;
+      x <<= 8n;
+      x += BigInt(component);
     });
     return x;
   }
@@ -464,7 +464,7 @@ class Colour {
    * @param {BigInteger} x 
    */
   static adjacencyFromBigInt(x){
-    const adjArray = new Array(8);
+    const adjArray = new BigUint64Array(8);
     for(let i = 7; i >=0; i--){
       adjArray[i] = x & 0x00000000000000FF;
       x >>= 8;
