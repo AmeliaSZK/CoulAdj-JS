@@ -179,6 +179,7 @@ class PixelArray {
     this.maxPixel = -1;
     this.imageData = this.extractImageData(this.source);
     this.adjacencies = new Set();
+    this.results = '';
 
   }
 
@@ -323,13 +324,55 @@ class PixelArray {
 
     const includeAlpha = this.decideAlpha();
 
-    let output = new Array(3);
-    console.log(output.length);
-    output.push("Hi");
-    console.log(output.length);
+    let output = new Array();
+
+    const header = includeAlpha ? RBGALPHA_HEADER : RBG_HEADER;
+    const stringify = includeAlpha ? Colour.adjacencyToRgbAlphaString : Colour.adjacencyToRgbString;
+
+    output.push(header);
+    adjacencies.forEach(adjacency => output.push(stringify(adjacency)));
+
+    this.results = output.join('\n');
+    console.log('Results :');
+    console.log(this.results);
+
+    setTimeout(this.showResults(), 0);
+  }
+
+  showResults() {
+    // TODO: Fix this monstrous hack
+    const outputTextbox = document.getElementById('output-textbox');
+    outputTextbox.innerHTML = this.results;
   }
 
 }
+
+/** The separator is hardcoded to deter from supporting CSV in the future.
+ * 
+ * Because the comma is used as the decimal separator in some locales, CSV files
+ *  can have a semicolon separator instead of the comma.
+ * 
+ * Hence, we consider the CSV format to be less reliable than TSV.
+ * 
+ * Because our outputs are expected to be processed by programming languages
+ *  where hardcoded parameters abound, we decided to priorize the reliability
+ *  of our output over the convenience of the option of a CSV output.
+ * 
+ * Specifically, this means that we consider a future support of CSV format
+ *  as a *bad* development.
+ * 
+ * Hence, we are hardcoding the tab separator as a final warning against
+ *  supporting the CSV format.
+ * 
+ * 
+ * 
+ * Or... that was what we initially planned to do.
+ * 
+ * Until we realized we trusted our future judgement more than our current
+ *  judgement.
+ * 
+ */
+const COLUMN_SEPARATOR = '\t';
 
 /** DO NOT CHANGE THESE HEADERS
  * 
@@ -346,13 +389,30 @@ class PixelArray {
  * 
  * DO NOT CHANGE
  */
-const RBG_HEADER = ['r', 'g', 'b', 'adj_r', 'adj_g', 'adj_b'].join('\t');
-const RBGALPHA_HEADER = ['r', 'g', 'b', 'a', 'adj_r', 'adj_g', 'adj_b', 'adj_a'].join('\t');
+const RBG_HEADER = ['r', 'g', 'b', 'adj_r', 'adj_g', 'adj_b'].join(COLUMN_SEPARATOR);
+const RBGALPHA_HEADER = ['r', 'g', 'b', 'a', 'adj_r', 'adj_g', 'adj_b', 'adj_a'].join(COLUMN_SEPARATOR);
 // RgbAplha instead of Rgba to avoid unnoticed typos.
 
 class Colour {
 
   constructor() { }
+
+  /** Brings an Uint8ClampedArray of 8 elements to an RGB string of 6 columns
+   * 
+   * @param {Uint8ClampedArray} adj 
+   */
+  static adjacencyToRgbString(adj) {
+    // Notice that we are skipping adj[3] and adj[7]
+    return [adj[0], adj[1], adj[2], adj[4], adj[5], adj[6]].join(COLUMN_SEPARATOR);
+  }
+
+  /** Brings an Uint8ClampedArray of 8 elements to an RgbAlpha string of 8 columns
+   * 
+   * @param {Uint8ClampedArray} adj 
+   */
+  static adjacencyToRgbAlphaString(adj) {
+    return adj.join(COLUMN_SEPARATOR);
+  }
 
   /** Compares two Uint8ClampedArray with exactly 4 elements each.
    * 
