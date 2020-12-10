@@ -178,6 +178,7 @@ class PixelArray {
     this.maxColumn = -1;
     this.maxPixel = -1;
     this.imageData = this.extractImageData(this.source);
+    this.adjacencies = new Set();
 
   }
 
@@ -237,7 +238,7 @@ class PixelArray {
     // # Stop condition(s) #
     if (startPixel > this.maxPixel) {
       console.log('Stopping processManyPixels.');
-      setTimeout(this.stringifyWhole, 0);
+      setTimeout(this.stringifyWhole(), 0);
       return;
     }
 
@@ -263,6 +264,12 @@ class PixelArray {
 
   stringifyWhole() {
     console.log('Starting stringifyWhole');
+    console.log('this.height = ' + this.height);
+    console.log('this.width = ' + this.width);
+    console.log('this.maxRow = ' + this.maxRow);
+    console.log('this.maxColumn = ' + this.maxColumn);
+    console.log('this.maxPixel = ' + this.maxPixel);
+    console.log(this.adjacencies);
   }
 
 
