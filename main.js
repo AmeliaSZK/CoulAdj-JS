@@ -268,7 +268,7 @@ class PixelArray {
    * say if the original image had an alpha channel.
    * 
    */
-  includeAlpha() {
+  decideAlpha() {
     return true;
   }
 
@@ -320,6 +320,13 @@ class PixelArray {
 
     const adjacencies = Array.from(this.adjacencies.keys());
     adjacencies.sort(Colour.compareAdjacency);
+
+    const includeAlpha = this.decideAlpha();
+
+    let output = new Array(3);
+    console.log(output.length);
+    output.push("Hi");
+    console.log(output.length);
   }
 
 }
