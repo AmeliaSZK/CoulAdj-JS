@@ -301,7 +301,7 @@ class PixelArray {
     sortingTest.sort(Colour.compare);
     console.log(sortingTest);
 
-    const extractionTest = new Array.from(this.adjacencies.keys());
+    const extractionTest = Array.from(this.adjacencies.keys());
     extractionTest.sort(Colour.compare);
     console.log(extractionTest);
   }
