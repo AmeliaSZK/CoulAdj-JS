@@ -239,7 +239,7 @@ class PixelArray {
     // # Stop condition(s) #
     if (startPixel > this.maxPixel) {
       console.log('Stopping processManyPixels.');
-      setTimeout(this.stringifyWhole(), 0);
+      setTimeout(this.stringify(), 0);
       return;
     }
 
@@ -273,51 +273,8 @@ class PixelArray {
     return true;
   }
 
-  stringifyWhole() {
+  stringify() {
     console.log('Starting stringifyWhole');
-    console.log('this.height = ' + this.height);
-    console.log('this.width = ' + this.width);
-    console.log('this.maxRow = ' + this.maxRow);
-    console.log('this.maxColumn = ' + this.maxColumn);
-    console.log('this.maxPixel = ' + this.maxPixel);
-    console.log(this.adjacencies);
-
-    const col1 = new Uint8ClampedArray([0, 32, 64, 128]);
-    const col2 = new Uint8ClampedArray([0, 0, 0, 255]);
-    const col2b = new Uint8ClampedArray([0, 128, 0, 255]);
-    const col3 = new Uint8ClampedArray([0, 32, 64, 255]);
-    const col4 = new Uint8ClampedArray([0, 32, 0, 255]);
-    const col5 = new Uint8ClampedArray([0, 64, 0, 255]);
-    const adj1 = new Uint8ClampedArray([...col1, ...col2]);
-    const adj2b = new Uint8ClampedArray([...col3, ...col2b]);
-    const adj2 = new Uint8ClampedArray([...col3, ...col2]);
-    const adj3 = new Uint8ClampedArray([...col3, ...col4]);
-    const adj4 = new Uint8ClampedArray([...col5, ...col2]);
-
-    console.log('adj 1 = ' + adj1.toString());
-    console.log('adj 2 = ' + adj2.toString());
-    console.log('adj 2b = ' + adj2b.toString());
-    console.log('adj 3 = ' + adj3.toString());
-    console.log('adj 4 = ' + adj4.toString());
-
-    this.adjacencies.add(adj4);
-    this.adjacencies.add(adj2b);
-    this.adjacencies.add(adj1);
-    this.adjacencies.add(adj3);
-    this.adjacencies.add(adj2);
-
-    console.log('col3 vs col2b : ' + Colour.compare(col3, col2b));
-    console.log('col2b vs col2b : ' + Colour.compare(col2b, col2b));
-    console.log('col2b vs col3 : ' + Colour.compare(col2b, col3));
-    console.log('[255,0,0,0] vs [0,255,0,0] : ' + Colour.compare([255, 0, 0, 0], [0, 255, 0, 0]));
-
-    const sortingTest = [adj4, adj2b, adj1, adj3, adj2];
-    sortingTest.sort(Colour.compareAdjacency);
-    console.log(sortingTest);
-
-    const extractionTest = Array.from(this.adjacencies.keys());
-    extractionTest.sort(Colour.compareAdjacency);
-    console.log(extractionTest);
 
     const adjacencies = Array.from(this.adjacencies.keys());
     adjacencies.sort(Colour.compareAdjacency);
@@ -363,7 +320,6 @@ class PixelArray {
  * 
  * Hence, we are hardcoding the tab separator as a final warning against
  *  supporting the CSV format.
- * 
  * 
  * 
  * Or... that was what we initially planned to do.
