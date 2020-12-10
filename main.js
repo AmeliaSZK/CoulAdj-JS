@@ -271,15 +271,16 @@ class PixelArray {
     console.log('this.maxPixel = ' + this.maxPixel);
     console.log(this.adjacencies);
 
-    const col1 = [0, 32, 64, 128];
-    const col2 = [0,  0,  0, 255];
-    const col3 = [0, 32, 64, 255];
-    const col4 = [0, 32,  0, 255];
-    const col5 = [0, 64,  0, 255];
-    const adj1 = [...col1, ...col2];
-    const adj2 = [...col3, ...col2];
-    const adj3 = [...col3, ...col4];
-    const adj4 = [...col5, ...col2];
+    const col1 = new Uint8ClampedArray([0, 32, 64, 128]);
+    const col2 = new Uint8ClampedArray([0,  0,  0, 255]);
+    const col2b = new Uint8ClampedArray([0,  128,  0, 255]);
+    const col3 = new Uint8ClampedArray([0, 32, 64, 255]);
+    const col4 = new Uint8ClampedArray([0, 32,  0, 255]);
+    const col5 = new Uint8ClampedArray([0, 64,  0, 255]);
+    const adj1 = new Uint8ClampedArray([...col1, ...col2]);
+    const adj2 = new Uint8ClampedArray([...col3, ...col2b]);
+    const adj3 = new Uint8ClampedArray([...col3, ...col4]);
+    const adj4 = new Uint8ClampedArray([...col5, ...col2]);
 
     console.log('adj 1 = ' + adj1.toString());
     console.log('adj 2 = ' + adj2.toString());
@@ -290,10 +291,50 @@ class PixelArray {
     this.adjacencies.add(adj1);
     this.adjacencies.add(adj3);
     this.adjacencies.add(adj2);
+
+    const sortingTest = [adj4, adj1, adj3, adj2];
+    sortingTest.sort();
+    console.log(sortingTest);
   }
 
+}
 
+class Colour{
 
+  /** Compares two Uint8ClampedArray with exactly 4 elements each.
+   * 
+   * @param {Uint8ClampedArray} a 
+   * @param {Uint8ClampedArray} b 
+   */
+  compare(a, b) {
+    /** This function is expected to be the most called in the whole program,
+     * and we want to be able to process inputs with millions of pixels.
+     * 
+     * Hence, we want this function to be *fast*
+     * 
+     * The current implementation is using bitwise operators in hope that
+     * the runtime engine will be smart enough to see that we are treating
+     * four consecutive unsigned 8-bit integers as a single unsigned 32-bit.
+     */
+
+    vA = a[0]; // vA means valueA
+    vA <<= 8;
+    vA |= a[1]; // We don't loop because it would create more CPU instructions.
+    vA <<= 8;
+    vA |= a[2];
+    vA <<= 8;
+    vA |= a[3];
+
+    vB = b[0]; // We copy-pasted code because function calls cost instructions.
+    vB <<= 8;
+    vB |= b[1]; 
+    vB <<= 8;
+    vB |= b[2];
+    vB <<= 8;
+    vB |= b[3];
+
+    return vA - vB;
+  }
 }
 
 
