@@ -53,6 +53,14 @@ const activateDevMode = () => {
   chooseFileButton.attributes.removeNamedItem('required');
   outputTextbox.attributes.removeNamedItem('readonly');
   outputTextbox.innerHTML = 'Hello Inner Text\n' + 'Next line?\n' + 'Tabs\t?\tHello';
+
+  const testArray = [255, 8, 32, 128];
+  const testColour = Uint8ClampedArray.from(testArray);
+  console.log('testColour = ' + testColour.toString());
+  const testNumber = Colour.toNumber(testColour);
+  console.log('testNumber = ' + testNumber);
+  const testColour2 = Colour.fromNumber(testNumber);
+  console.log('testColour2 = ' + testColour2.toString());
 }
 
 /** Process the source image and write the output.
@@ -179,7 +187,7 @@ class PixelArray {
     this.maxColumn = -1;
     this.maxPixel = -1;
     this.data;
-    this.adjacencies = new Set();
+    this.adjacencies = new Map();
     this.results = '';
     this.imageData = this.extractImageData(this.source);
 
@@ -207,12 +215,14 @@ class PixelArray {
         this.maxRow = this.height - 1;
         this.maxColumn = this.width - 1;
         this.maxPixel = this.height * this.width - 1;
+        this.maxIndex = this.maxPixel;
         console.log('this.height = ' + this.height);
         console.log('this.width = ' + this.width);
         console.log('this.maxRow = ' + this.maxRow);
         console.log('this.maxColumn = ' + this.maxColumn);
         console.log('this.maxPixel = ' + this.maxPixel);
         this.data = imgDt.data;
+        this.printData();
         this.startProcessingPixels();
         return imgDt;
       });
@@ -276,20 +286,21 @@ class PixelArray {
 
 
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, -1);
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1,  0);
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1,  1);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, 0);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, 1);
 
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, 0, -1);
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 0,  1);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 0, 1);
 
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1, -1);
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1,  0);
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1,  1);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1, 0);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1, 1);
 
   }
 
   colourFromIndex(index) {
-    return this.data.slice(index, index + 4);
+    const offset = index * 4;
+    return this.data.slice(offset, offset + 4);
   }
 
   rowFromIndex(index) {
@@ -317,7 +328,7 @@ class PixelArray {
     const neighColumn = pixelColumn + columnOffset;
 
     // Verify that the neighbour exists.
-    if(!this.validRowColumn(neighRow, neighColumn)){
+    if (!this.validRowColumn(neighRow, neighColumn)) {
       return;
     }
 
@@ -326,7 +337,7 @@ class PixelArray {
 
     // console.log(`\t neigh [${neighRow}, ${neighColumn}] : ${neighColour}`);
 
-    if(Colour.same(pixelColour, neighColour)) {
+    if (Colour.same(pixelColour, neighColour)) {
       return;
     }
 
@@ -340,18 +351,24 @@ class PixelArray {
    * @param {Uint8ClampedArray} neighColour 
    */
   register(pixelColour, neighColour) {
-    const pixelArray = Array.from(pixelColour);
-    const neighArray = Array.from(neighColour);
-    const adjacencyArray = pixelArray.concat(neighArray);
-    const adjacency = Uint8ClampedArray.from(adjacencyArray);
-    // console.log(`adjacency = ${adjacency}`);
-    this.adjacencies.add(adjacency);
+    const pixelColourNumber = Colour.toNumber(pixelColour);
+    const neighColourNumber = Colour.toNumber(neighColour);
+
+    // If pixelColour not in the Map, create the entry and create its Set
+    if (!this.adjacencies.has(pixelColourNumber)) {
+      this.adjacencies.set(pixelColourNumber, new Set());
+    }
+
+    this.adjacencies.get(pixelColourNumber).add(neighColourNumber);
   }
 
 
 
   validRowColumn(row, column) {
-    return row <= this.maxRow && column <= this.maxColumn;
+    return 0 <= row
+      && 0 <= column
+      && row <= this.maxRow
+      && column <= this.maxColumn;
   }
 
   /** Decides if the alpha column should be included.
@@ -365,11 +382,38 @@ class PixelArray {
   }
 
   stringify() {
-    console.log('Starting stringifyWhole');
+    console.log('Starting stringify');
 
+    console.log('this.adjacencies:');
     console.log(this.adjacencies);
-    const adjacencies = Array.from(this.adjacencies.keys());
-    adjacencies.sort(Colour.compareAdjacency);
+
+    const coloursAsNumber = Array.from(this.adjacencies.keys());
+    console.log('coloursAsNumber:');
+    console.log(coloursAsNumber.toString());
+
+    coloursAsNumber.sort(Colour.compareNumbers);
+    console.log('coloursAsNumber post-sort:');
+    console.log(coloursAsNumber.toString());
+
+    const adjacencies = new Array();
+
+    coloursAsNumber.forEach(colourNumber => {
+      const adjacentsAsNumber = Array.from(this.adjacencies.get(colourNumber));
+      console.log('adjacentsAsNumber = ' + adjacentsAsNumber.toString());
+
+      adjacentsAsNumber.sort(Colour.compareNumbers);
+      console.log('adjacentsAsNumber post-sort = ' + adjacentsAsNumber.toString());
+
+      const colour = Colour.fromNumber(colourNumber);
+
+      adjacentsAsNumber.forEach(adjacentNumber => {
+        const adjacent = Colour.fromNumber(adjacentNumber);
+        const adjacency = Colour.coloursToAdjacency(colour, adjacent);
+        adjacencies.push(adjacency);
+      });
+    });
+
+    console.log('adjacencies in stringify:');
     console.log(adjacencies);
 
     const includeAlpha = this.decideAlpha();
@@ -395,7 +439,39 @@ class PixelArray {
     outputTextbox.innerHTML = this.results;
   }
 
+  printData() {
+    const dataLogArray = new Array();
+    const dataHeader = ['p', 'x', 'y', 'r', 'g', 'b', 'a'].join(COLUMN_SEPARATOR);
+    dataLogArray.push(dataHeader);
+    // "pixel" implies "pixelIndex"
+
+    for (let index = 0; index <= this.maxIndex; index++) {
+      const y = this.rowFromIndex(index);
+      const x = this.columnFromIndex(index);
+      const colour = Array.from(this.colourFromIndex(index));
+      const entryArray = [index, x, y].concat(colour);
+      const entry = entryArray.join(COLUMN_SEPARATOR);
+      dataLogArray.push(entry);
+    }
+
+    const dataLog = dataLogArray.join('\n');
+
+    console.log('dataLog:');
+    console.log(dataLog);
+  }
+
 }
+
+
+//  ██████  ██████  ██       ██████  ██    ██ ██████  
+// ██      ██    ██ ██      ██    ██ ██    ██ ██   ██ 
+// ██      ██    ██ ██      ██    ██ ██    ██ ██████  
+// ██      ██    ██ ██      ██    ██ ██    ██ ██   ██ 
+//  ██████  ██████  ███████  ██████   ██████  ██   ██ 
+//                                                    
+// Ascii art by: http://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=Colour
+
+
 
 /** The separator is hardcoded to deter from supporting CSV in the future.
  * 
@@ -442,9 +518,84 @@ const RBG_HEADER = ['r', 'g', 'b', 'adj_r', 'adj_g', 'adj_b'].join(COLUMN_SEPARA
 const RBGALPHA_HEADER = ['r', 'g', 'b', 'a', 'adj_r', 'adj_g', 'adj_b', 'adj_a'].join(COLUMN_SEPARATOR);
 // RgbAplha instead of Rgba to avoid unnoticed typos.
 
+
+/** This is currently a collection of static functions to work with "colours".
+ * 
+ * Vocabulary that YOU, THE CODER, is expected to know:
+ * Colour       A Uint8ClampedArray of 4 elements organized as such: [r, g, b, a]
+ * Adjacency    A Uint8ClampedArray of 8 elements organized as such: [r, g, b, a, adj_r, adj_g, adj_b, adj_a]
+ * Same         The "same" colour means that the *distinct* objects `a` and `b`
+ *                have the same values in the same positions, and hence will 
+ *                produce `true` for `Colour.same(a,b)` 
+ *                and     `0`    for `Colour.compare(a,b)`.
+ * 
+ * These functions were designed with *speed* in mind, so don't expect them to accept,
+ * tolerate, or even be correct if you send them any other data types or 
+ * formats unless explicitely noted.
+ * 
+ */
 class Colour {
 
   constructor() { }
+
+  /** Concatenates two colours to a new adjacency.
+   * 
+   * @param {Uint8ClampedArray} a 
+   * @param {Uint8ClampedArray} b 
+   */
+  static coloursToAdjacency(a, b) {
+    // Code from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/set
+    const buffer = new ArrayBuffer(8);
+    const adjacency = new Uint8ClampedArray(buffer);
+    adjacency.set(a, 0);
+    adjacency.set(b, 4);
+    return adjacency;
+  }
+
+  /** Compares two numbers computed by `Colour.toNumber`
+   * 
+   * @param {Number} a 
+   * @param {Number} b 
+   */
+  static compareNumbers(a, b) {
+    return Colour.compare(Colour.fromNumber(a), Colour.fromNumber(b));
+  }
+
+  /** Converts a colour into a number that can be converted back to the same
+   * colour with `Colour.fromNumber()`.
+   * 
+   * @param {Uint8ClampedArray} colour 
+   */
+  static toNumber(colour) {
+    let n = 0;
+    n += colour[0];
+    n <<= 8;
+    n += colour[1];
+    n <<= 8;
+    n += colour[2];
+    n <<= 8;
+    n += colour[3];
+    return n;
+  }
+
+  /** Converts a number computed by `Colour.toNumber` back to the same colour.
+   * 
+   * @param {Number} number 
+   */
+  static fromNumber(number) {
+    const colourArray = new Array();
+    let n = number;
+    colourArray.push(n & 0xff);
+    n >>>= 8;
+    colourArray.push(n & 0xff);
+    n >>>= 8;
+    colourArray.push(n & 0xff);
+    n >>>= 8;
+    colourArray.push(n & 0xff);
+    colourArray.reverse();
+
+    return Uint8ClampedArray.from(colourArray);
+  }
 
   /** Returns `true` if both colours are the same.
    * 
