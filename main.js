@@ -53,6 +53,13 @@ const activateDevMode = () => {
   chooseFileButton.attributes.removeNamedItem('required');
   outputTextbox.attributes.removeNamedItem('readonly');
   outputTextbox.innerHTML = 'Hello Inner Text\n' + 'Next line?\n' + 'Tabs\t?\tHello';
+
+  const testArray = [255,8,32,128];
+  const testColour = Uint8ClampedArray.from(testArray);
+  const testNumber = Colour.toNumber(testColour);
+  console.log(testNumber);
+  const testColour2 = Colour.fromNumber(testNumber);
+  console.log(testColour2.toString());
 }
 
 /** Process the source image and write the output.
@@ -495,7 +502,19 @@ class Colour {
    * @param {Number} number 
    */
   static fromNumber(number) {
+    const colourArray = new Array();
+    let n = number;
+    colourArray.push(n & 0xff);
+    n >>> 8;
+    colourArray.push(n & 0xff);
+    n >>> 8;
+    colourArray.push(n & 0xff);
+    n >>> 8;
+    colourArray.push(n & 0xff);
+    console.log(colourArray.toString());
+    colourArray.reverse();
 
+    return Uint8ClampedArray.from(colourArray);
   }
 
   /** Returns `true` if both colours are the same.
