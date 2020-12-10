@@ -221,6 +221,7 @@ class PixelArray {
    */
   processPixel(pixel) {
     //console.log('Entered pixel ' + pixel);
+    const BATCH_SIZE = 10000;
 
     // # Stop condition(s) #
     if (pixel > this.maxPixel) {
@@ -228,13 +229,13 @@ class PixelArray {
       return;
     }
 
-    //setTimeout(() => { this.processPixel(pixel + 1000) }, 0);
+    setTimeout(() => { this.processPixel(pixel + 1000) }, 0);
 
 
-    for (let i = 0; i < 1000 && pixel + i < this.maxPixel; i++) {
+    for (let i = 0; i < BATCH_SIZE && pixel + i <= this.maxPixel; i++) {
       // I think logging every pixel might be overwhelming the console??
       let currentPixel = pixel + i;
-      if (currentPixel % 100 === 0 || currentPixel === this.maxPixel) {
+      if (currentPixel % (BATCH_SIZE / 10) === 0 || currentPixel === this.maxPixel) {
         console.log('Starting pixel ' + currentPixel);
       }
     }
