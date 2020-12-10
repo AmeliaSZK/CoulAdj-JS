@@ -167,6 +167,7 @@ class PixelArray {
   constructor(source, options, logError) {
     this.source = source;
     this.diagonals = options.diagonals ?? DiagonalsSettings.ADJACENT;
+    this.diagonalsAreRelated = this.diagonals === DiagonalsSettings.ADJACENT ? true : false;
     this.includeAlpha = options.includeAlpha ?? IncludeAlphaSettings.WHEN_RELEVANT;
     this.logError = logError ?? console.error;
     // All those variables initialized to -1 are given their actual value
@@ -256,11 +257,73 @@ class PixelArray {
     setTimeout(this.processManyPixels(lastPixel + 1, nbPixels), 0);
   }
 
+  /** Does NOT verify that the pixel is inbound.
+   * 
+   * @param {*} pixel Index of the pixel. First pixel is at 0.
+   */
   processOnePixel(pixel) {
     if (pixel % (1 * 1000 * 1000) === 0) {
       console.log('Starting pixel ' + pixel.toLocaleString());
     }
 
+    const pixelColour = colourFromIndex(pixel);
+    const pixelRow = this.rowFromIndex(pixel);
+    const pixelColumn = this.columnFromIndex(pixel);
+
+  }
+
+  colourFromIndex(index) {
+    return this.imageData.data.slice(index, index + 4);
+  }
+
+  rowFromIndex(index) {
+    return Math.trunc(index / this.width);
+  }
+
+  columnFromIndex(index) {
+    return index % this.width;
+  }
+
+  indexFromRowColumn(row, column) {
+    return row * this.width + column;
+  }
+
+  /**
+   * 
+   * @param {Uint8ClampedArray} pixelColour 
+   * @param {Number} pixelRow 
+   * @param {Number} pixelColumn 
+   * @param {Number} rowOffset 
+   * @param {Number} columnOffset 
+   */
+  processNeighbour(pixelColour, pixelRow, pixelColumn, rowOffset, columnOffset) {
+    const neighRow = pixelRow + rowOffset;
+    const neighColumn = pixelColumn + columnOffset;
+
+    // Verify that the neighbour exists.
+    if(!this.validRowColumn(neighRow, neighColumn)){
+      return;
+    }
+
+    const neighIndex = indexFromRowColumn(neighRow, neighColumn);
+    const neighColour = colourFromIndex(neighIndex);
+
+    if(Colour.same(pixelColour, neighColour)) {
+      return;
+    }
+
+    this.register(pixelColour, neighColour);
+  }
+
+  register(pixelColour, neighColour) {
+    const adjacency = new Uint8ClampedArray(...pixelColour, ...neighColour);
+    this.adjacencies.add(adjacency);
+  }
+
+
+
+  validRowColumn(row, column) {
+    return row <= this.maxRow && column <= this.maxColumn;
   }
 
   /** Decides if the alpha column should be included.
@@ -352,6 +415,15 @@ const RBGALPHA_HEADER = ['r', 'g', 'b', 'a', 'adj_r', 'adj_g', 'adj_b', 'adj_a']
 class Colour {
 
   constructor() { }
+
+  /** Returns `true` if both colours are the same.
+   * 
+   * @param {Uint8ClampedArray} a 
+   * @param {Uint8ClampedArray} b 
+   */
+  static same(a, b) {
+    return Colour.compare(a, b) === 0;
+  }
 
   /** Brings an Uint8ClampedArray of 8 elements to an RGB string of 6 columns
    * 
