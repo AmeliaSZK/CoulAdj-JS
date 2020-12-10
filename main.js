@@ -261,7 +261,7 @@ class PixelArray {
         console.log('this.maxColumn = ' + this.maxColumn);
         console.log('this.maxPixel = ' + this.maxPixel);
         this.data = imgDt.data;
-        this.printData();
+        //this.printData();
         this.startProcessingPixels();
         return imgDt;
       });
@@ -425,25 +425,25 @@ class PixelArray {
   stringify() {
     console.log('Starting stringify');
 
-    console.log('this.adjacencies:');
-    console.log(this.adjacencies);
+    // console.log('this.adjacencies:');
+    // console.log(this.adjacencies);
 
     const coloursAsNumber = Array.from(this.adjacencies.keys());
-    console.log('coloursAsNumber:');
-    console.log(coloursAsNumber.toString());
+    // console.log('coloursAsNumber:');
+    // console.log(coloursAsNumber.toString());
 
     coloursAsNumber.sort(Colour.compareNumbers);
-    console.log('coloursAsNumber post-sort:');
-    console.log(coloursAsNumber.toString());
+    // console.log('coloursAsNumber post-sort:');
+    // console.log(coloursAsNumber.toString());
 
     const adjacencies = new Array();
 
     coloursAsNumber.forEach(colourNumber => {
       const adjacentsAsNumber = Array.from(this.adjacencies.get(colourNumber));
-      console.log('adjacentsAsNumber = ' + adjacentsAsNumber.toString());
+      // console.log('adjacentsAsNumber = ' + adjacentsAsNumber.toString());
 
       adjacentsAsNumber.sort(Colour.compareNumbers);
-      console.log('adjacentsAsNumber post-sort = ' + adjacentsAsNumber.toString());
+      // console.log('adjacentsAsNumber post-sort = ' + adjacentsAsNumber.toString());
 
       const colour = Colour.fromNumber(colourNumber);
 
@@ -454,8 +454,8 @@ class PixelArray {
       });
     });
 
-    console.log('adjacencies in stringify:');
-    console.log(adjacencies);
+    // console.log('adjacencies in stringify:');
+    // console.log(adjacencies);
 
     const includeAlpha = this.decideAlpha();
 
