@@ -221,6 +221,7 @@ class PixelArray {
   startProcessingPixels() {
     console.log('Entered startProcessingPixels');
     const batchSize = 1 * 1000 * 1000; // Written like this for clarity.
+    console.log('batchSize = ' + batchSize.toLocaleString());
 
     const firstIndex = 0; // To avoid confusion with the 0 delay below
     setTimeout(this.processManyPixels(firstIndex, batchSize), 0);
@@ -231,10 +232,11 @@ class PixelArray {
    * @param {Number} pixel Index of the pixel to process
    */
   processManyPixels(startPixel, nbPixels) {
-    console.log('Entered processManyPixels. start = ' + startPixel + ', nb = ' + nbPixels);
+    console.log('Entered processManyPixels. start = ' + startPixel);
 
     // # Stop condition(s) #
     if (startPixel > this.maxPixel) {
+      console.log('Stopping processManyPixels.');
       setTimeout(this.stringifyWhole, 0);
       return;
     }
@@ -253,7 +255,7 @@ class PixelArray {
   }
 
   processOnePixel(pixel) {
-    if (pixel % (100 * 1000) === 0) {
+    if (pixel % (1 * 1000 * 1000) === 0) {
       console.log('Starting pixel ' + pixel.toLocaleString());
     }
 
