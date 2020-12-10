@@ -340,9 +340,10 @@ class PixelArray {
    * @param {Uint8ClampedArray} neighColour 
    */
   register(pixelColour, neighColour) {
-    const adjacency = Uint8ClampedArray.from(pixelColour);
-    neighColour.forEach(component => adjacency.push(component));
-
+    const pixelArray = Array.from(pixelColour);
+    const neighArray = Array.from(neighColour);
+    const adjacencyArray = pixelArray.concat(neighArray);
+    const adjacency = Uint8ClampedArray.from(adjacencyArray);
     console.log(`adjacency = ${adjacency}`);
     this.adjacencies.add(adjacency);
   }
