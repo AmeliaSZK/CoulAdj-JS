@@ -464,10 +464,10 @@ class Colour {
    * @param {BigInteger} x 
    */
   static adjacencyFromBigInt(x){
-    const adjArray = new BigUint64Array(8);
+    const adjArray = new Array(8);
     for(let i = 7; i >=0; i--){
-      adjArray[i] = x & 0x00000000000000FF;
-      x >>= 8;
+      adjArray[i] = Number(x & 0x00000000000000FFn);
+      x >>= 8n;
     }
     return Uint8ClampedArray.from(adjArray);
   }
