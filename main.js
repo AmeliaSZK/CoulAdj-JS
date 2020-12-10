@@ -229,7 +229,7 @@ class PixelArray {
       return;
     }
 
-    setTimeout(() => { this.processPixel(pixel + 1000) }, 0);
+    setTimeout(() => { this.processPixel(pixel + BATCH_SIZE) }, 0);
 
 
     for (let i = 0; i < BATCH_SIZE && pixel + i <= this.maxPixel; i++) {
