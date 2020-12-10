@@ -345,7 +345,7 @@ class PixelArray {
     const adjacencyArray = pixelArray.concat(neighArray);
     const adjacency = Uint8ClampedArray.from(adjacencyArray);
     // console.log(`adjacency = ${adjacency}`);
-    this.adjacencies.add(Colour.bigIntFromAdjacency(adjacency));
+    this.adjacencies.add(Colour.charsFromAdjacency(adjacency));
   }
 
 
@@ -368,7 +368,7 @@ class PixelArray {
     console.log('Starting stringifyWhole');
 
     console.log(this.adjacencies);
-    const adjacencies = Array.from(this.adjacencies.keys(), Colour.adjacencyFromBigInt);
+    const adjacencies = Array.from(this.adjacencies.keys(), Colour.adjacencyFromChars);
     adjacencies.sort(Colour.compareAdjacency);
     console.log(adjacencies);
 
@@ -450,24 +450,18 @@ class Colour {
    * 
    * @param {Uint8ClampedArray} adjacency 
    */
-  static bigIntFromAdjacency(adjacency){
-    let x = 0n;
-    adjacency.forEach(component => {
-      x <<= 8n;
-      x += BigInt(component);
-    });
-    return x;
+  static charsFromAdjacency(adjacency){
+    return String.fromCharCode(...adjacency);
   }
 
   /**
    * 
-   * @param {BigInteger} x 
+   * @param {String} x 
    */
-  static adjacencyFromBigInt(x){
+  static adjacencyFromChars(s){
     const adjArray = new Array(8);
     for(let i = 0; i <= 7; i++){
-      adjArray[i] = Number(x & 0x00000000000000FFn);
-      x >>= 8n;
+      adjArray[i] = s.charCodeAt(i);
     }
     return Uint8ClampedArray.from(adjArray);
   }
