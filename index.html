@@ -36,11 +36,11 @@
         <legend>Diagonals are...</legend>
         <ul>
           <li>
-            <input type="radio" name="opt-diags" id="opt-diags-1" value="adjacent" checked>
+            <input type="radio" name="opt-diags" id="opt-diags-adjacent" value="adjacent" checked>
             <label for="opt-diags-1">Adjacent</label>
           </li>
           <li>
-            <input type="radio" name="opt-diags" id="opt-diags-2" value="unrelated">
+            <input type="radio" name="opt-diags" id="opt-diags-unrelated" value="unrelated">
             <label for="opt-diags-2">Unrelated</label>
           </li>
         </ul>
@@ -50,12 +50,20 @@
         <legend>Include alpha column...</legend>
         <ul>
           <li>
-            <input type="radio" name="opt-alpha" id="opt-alpha-1" value="when-present" disabled>
+            <input type="radio" name="opt-alpha" id="opt-alpha-when-present" value="when-present" disabled>
             <label for="opt-alpha-1">When source has alpha (currently unavailable)</label>
           </li>
           <li>
-            <input type="radio" name="opt-alpha" id="opt-alpha-2" value="always" checked>
+            <input type="radio" name="opt-alpha" id="opt-alpha-when-used" value="when-used" checked>
+            <label for="opt-alpha-2">When used</label>
+          </li>
+          <li>
+            <input type="radio" name="opt-alpha" id="opt-alpha-always" value="always">
             <label for="opt-alpha-2">Always</label>
+          </li>
+          <li>
+            <input type="radio" name="opt-alpha" id="opt-alpha-never" value="never">
+            <label for="opt-alpha-2">Never (Warning: may contain duplicates)</label>
           </li>
         </ul>
       </fieldset>

@@ -82,11 +82,49 @@ const okButtonClick = (evt) => {
     return false;
   }
 
-  const image = new PixelArray(chosenFiles[0], {}, console.error);
+  const chosenDiagonals = parseDiagonalsSetting();
+  const chosenIncludeAlpha = parseDiagonalsSetting();
+
+  const chosenOptions = {
+    diagonals: chosenDiagonals,
+    includeAlpha: chosenIncludeAlpha
+  };
+
+  const image = new PixelArray(chosenFiles[0], chosenOptions, console.error);
   setTimeout(console.log, 0, 'setTimeout in okButtonClick');
 
   return true;
 
+}
+
+const parseDiagonalsSetting = () => {
+  if (document.getElementById('opt-diags-adjacent').checked) {
+    return DiagonalsSettings.ADJACENT;
+
+  } else if (document.getElementById('opt-diags-unrelated').checked) {
+    return DiagonalsSettings.UNRELATED;
+
+  } else {
+    return undefined;
+  }
+}
+
+const parseIncludeAlphaSetting = () => {
+  if (document.getElementById('opt-alpha-when-present').checked) {
+    return IncludeAlphaSettings.WHEN_PRESENT;
+
+  } else if (document.getElementById('opt-alpha-when-used').checked) {
+    return IncludeAlphaSettings.WHEN_USED;
+
+  } else if (document.getElementById('opt-alpha-always').checked) {
+    return IncludeAlphaSettings.ALWAYS;
+
+  } else if (document.getElementById('opt-alpha-never').checked) {
+    return IncludeAlphaSettings.NEVER;
+
+  } else {
+    return undefined;
+  }
 }
 
 /** Copy the output to the clipboard
@@ -157,8 +195,9 @@ const DiagonalsSettings = {
 
 const IncludeAlphaSettings = {
   WHEN_PRESENT: 'when-present',
-  WHEN_RELEVANT: 'when-relevant',
-  ALWAYS: 'always'
+  WHEN_USED: 'when-used',
+  ALWAYS: 'always',
+  NEVER: 'never'
 }
 
 
