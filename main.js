@@ -437,20 +437,20 @@ class PixelArray {
 
   printData() {
     const dataLogArray = new Array();
-    const dataHeader = ['pixel','row','column'].join(COLUMN_SEPARATOR) + COLUMN_SEPARATOR + RBGALPHA_HEADER;
+    const dataHeader = ['p','x','y', 'r', 'g', 'b', 'a'].join(COLUMN_SEPARATOR);
     dataLogArray.push(dataHeader);
     // "pixel" implies "pixelIndex"
 
     for(let index = 0; index <= this.maxIndex; index++){
-      const row = this.rowFromIndex(index);
-      const column = this.columnFromIndex(index);
-      const colour = colourFromIndex(index);
-      const entryArray = [index, row, column].concat(colour);
+      const y = this.rowFromIndex(index);
+      const x = this.columnFromIndex(index);
+      const colour = Array.from(this.colourFromIndex(index));
+      const entryArray = [index, x, y].concat(colour);
       const entry = entryArray.join(COLUMN_SEPARATOR);
       dataLogArray.push(entry);
     }
 
-    const dataLog = dataLogArray.join(COLUMN_SEPARATOR);
+    const dataLog = dataLogArray.join('\n');
 
     console.log('dataLog:');
     console.log(dataLog);
