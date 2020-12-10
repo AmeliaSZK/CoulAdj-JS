@@ -295,7 +295,7 @@ class PixelArray {
     console.log('col3 vs col2b : ' + Colour.compare(col3, col2b));
     console.log('col2b vs col2b : ' + Colour.compare(col2b, col2b));
     console.log('col2b vs col3 : ' + Colour.compare(col2b, col3));
-    console.log('[255,0,0,0] vs [0,255,0,0] : ' + Colour.compare([255,0,0,0], [0,255,0,0]));
+    console.log('[255,0,0,0] vs [0,255,0,0] : ' + Colour.compare([255, 0, 0, 0], [0, 255, 0, 0]));
 
     const sortingTest = [adj4, adj1, adj3, adj2];
     console.log(sortingTest);
@@ -325,24 +325,44 @@ class Colour {
      * four consecutive unsigned 8-bit integers as a single unsigned 32-bit.
      */
 
-    let vA = a[0]; // vA means valueA
-    vA <<= 8;
-    vA |= a[1]; // We don't loop because it would create more CPU instructions.
-    vA <<= 8;
-    vA |= a[2];
-    vA <<= 8;
-    vA |= a[3];
+    // let vA = a[0]; // vA means valueA
+    // vA <<= 8;
+    // vA |= a[1]; // We don't loop because it would create more CPU instructions.
+    // vA <<= 8;
+    // vA |= a[2];
+    // vA <<= 8;
+    // vA |= a[3];
 
-    let vB = b[0]; // We copy-pasted code because function calls cost instructions.
-    vB <<= 8;
-    vB |= b[1];
-    vB <<= 8;
-    vB |= b[2];
-    vB <<= 8;
-    vB |= b[3];
+    // let vB = b[0]; // We copy-pasted code because function calls cost instructions.
+    // vB <<= 8;
+    // vB |= b[1];
+    // vB <<= 8;
+    // vB |= b[2];
+    // vB <<= 8;
+    // vB |= b[3];
 
-    return vA - vB;
+    // return vA - vB;
+
+    /**
+     * The bitwise implementation failed because it said that [255,0,0,0] is
+     * smaller than [0,255,0,0]
+     */
+
+    if (a[0] !== b[0]) {
+      return a[0] - b[0];
+
+    } else if (a[1] !== b[1]) {
+      return a[1] - b[1];
+
+    } else if (a[2] !== b[2]) {
+      return a[2] - b[2];
+
+    } else {
+      return a[3] - b[3];
+    }
   }
+
+
 }
 
 
