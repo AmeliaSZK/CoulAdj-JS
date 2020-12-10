@@ -178,6 +178,7 @@ class PixelArray {
     this.maxRow = -1;
     this.maxColumn = -1;
     this.maxPixel = -1;
+    this.data;
     this.imageData = this.extractImageData(this.source);
     this.adjacencies = new Set();
     this.results = '';
@@ -211,6 +212,7 @@ class PixelArray {
         console.log('this.maxRow = ' + this.maxRow);
         console.log('this.maxColumn = ' + this.maxColumn);
         console.log('this.maxPixel = ' + this.maxPixel);
+        this.data = imgDt.data;
         this.startProcessingPixels();
         return imgDt;
       });
@@ -266,14 +268,14 @@ class PixelArray {
       console.log('Starting pixel ' + pixel.toLocaleString());
     }
 
-    const pixelColour = colourFromIndex(pixel);
+    const pixelColour = this.colourFromIndex(pixel);
     const pixelRow = this.rowFromIndex(pixel);
     const pixelColumn = this.columnFromIndex(pixel);
 
   }
 
   colourFromIndex(index) {
-    return this.imageData.data.slice(index, index + 4);
+    return this.data.slice(index, index + 4);
   }
 
   rowFromIndex(index) {
