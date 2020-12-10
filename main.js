@@ -397,6 +397,17 @@ class PixelArray {
 
 }
 
+
+//  ██████  ██████  ██       ██████  ██    ██ ██████  
+// ██      ██    ██ ██      ██    ██ ██    ██ ██   ██ 
+// ██      ██    ██ ██      ██    ██ ██    ██ ██████  
+// ██      ██    ██ ██      ██    ██ ██    ██ ██   ██ 
+//  ██████  ██████  ███████  ██████   ██████  ██   ██ 
+//                                                    
+// Ascii art by: http://patorjk.com/software/taag/#p=display&f=ANSI%20Regular&t=Colour
+
+
+
 /** The separator is hardcoded to deter from supporting CSV in the future.
  * 
  * Because the comma is used as the decimal separator in some locales, CSV files
@@ -442,6 +453,18 @@ const RBG_HEADER = ['r', 'g', 'b', 'adj_r', 'adj_g', 'adj_b'].join(COLUMN_SEPARA
 const RBGALPHA_HEADER = ['r', 'g', 'b', 'a', 'adj_r', 'adj_g', 'adj_b', 'adj_a'].join(COLUMN_SEPARATOR);
 // RgbAplha instead of Rgba to avoid unnoticed typos.
 
+
+/** This is currently a collection of static functions to work with "colours".
+ * 
+ * Vocabulary that YOU, THE CODER, is expected to know:
+ * Colour       A Uint8ClampedArray of 4 elements organized as such: [r, g, b, a]
+ * Adjacency    A Uint8ClampedArray of 8 elements organized as such: [r, g, b, a, adj_r, adj_g, adj_b, adj_a]
+ * 
+ * These functions were designed with *speed* in mind, so don't expect them to accept,
+ * tolerate, or give correct results if you send them any other data types or 
+ * formats unless explicitely noted.
+ * 
+ */
 class Colour {
 
   constructor() { }
