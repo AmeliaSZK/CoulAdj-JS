@@ -243,17 +243,19 @@ class PixelArray {
     const naiveLastPixel = startPixel + nbPixels - 1;
     const lastPixel = naiveLastPixel <= this.maxPixel ? naiveLastPixel : this.maxPixel;
 
-    // # Queue the next batch #
-    setTimeout(this.processManyPixels(lastPixel + 1, nbPixels), 0);
-
     // # Process the current batch #
-    console.log('Starting pixel ' + startPixel.toLocaleString());
     for (let pixel = startPixel; pixel <= lastPixel; pixel++) {
       this.processOnePixel(pixel);
     }
+
+    // # Queue the next batch #
+    setTimeout(this.processManyPixels(lastPixel + 1, nbPixels), 0);
   }
 
   processOnePixel(pixel) {
+    if (pixel % (100 * 1000) === 0) {
+      console.log('Starting pixel ' + pixel.toLocaleString());
+    }
 
   }
 
