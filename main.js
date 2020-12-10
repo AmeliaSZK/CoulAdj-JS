@@ -298,8 +298,7 @@ class PixelArray {
     console.log('[255,0,0,0] vs [0,255,0,0] : ' + Colour.compare([255, 0, 0, 0], [0, 255, 0, 0]));
 
     const sortingTest = [adj4, adj1, adj3, adj2];
-    console.log(sortingTest);
-    sortingTest.sort(Colour.compare());
+    sortingTest.sort(Colour.compare);
     console.log(sortingTest);
   }
 
