@@ -300,6 +300,10 @@ class PixelArray {
     const sortingTest = [adj4, adj1, adj3, adj2];
     sortingTest.sort(Colour.compare);
     console.log(sortingTest);
+
+    const extractionTest = new Array.from(this.adjacencies.keys());
+    extractionTest.sort(Colour.compare);
+    console.log(extractionTest);
   }
 
 }
