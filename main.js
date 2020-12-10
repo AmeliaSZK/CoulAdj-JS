@@ -248,7 +248,7 @@ class PixelArray {
         return bitmap;
       })
       .then(bitmap => {
-        return context.getImageData(0, 0, bitmap.height, bitmap.width);
+        return context.getImageData(0, 0, bitmap.width, bitmap.height);
       })
       .then(imgDt => {
         this.height = imgDt.height;
