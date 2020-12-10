@@ -257,15 +257,6 @@ class PixelArray {
       console.log('Starting pixel ' + pixel.toLocaleString());
     }
 
-    if(pixel === 0) {
-      console.log('Verifying the this in processOnePixel:');
-      console.log('this.height = ' + this.height);
-      console.log('this.width = ' + this.width);
-      console.log('this.maxRow = ' + this.maxRow);
-      console.log('this.maxColumn = ' + this.maxColumn);
-      console.log('this.maxPixel = ' + this.maxPixel);
-    }
-
   }
 
   stringifyWhole() {
