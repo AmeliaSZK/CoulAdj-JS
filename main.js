@@ -346,6 +346,8 @@ class Colour {
     /**
      * The bitwise implementation failed because it said that [255,0,0,0] is
      * smaller than [0,255,0,0]
+     * 
+     * This implementation doesn't have this problem.
      */
 
     if (a[0] !== b[0]) {
