@@ -221,7 +221,7 @@ class PixelArray {
    */
   processPixel(pixel) {
     //console.log('Entered pixel ' + pixel);
-    const BATCH_SIZE = 100000;
+    const BATCH_SIZE = 10000;
 
     // # Stop condition(s) #
     if (pixel > this.maxPixel) {
