@@ -465,7 +465,7 @@ class Colour {
    */
   static adjacencyFromBigInt(x){
     const adjArray = new Array(8);
-    for(let i = 7; i >=0; i--){
+    for(let i = 0; i <= 7; i++){
       adjArray[i] = Number(x & 0x00000000000000FFn);
       x >>= 8n;
     }
