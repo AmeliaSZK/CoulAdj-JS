@@ -381,14 +381,14 @@ class PixelArray {
     console.log('this.adjacencies:');
     console.log(this.adjacencies);
 
-    const coloursAsNumber = new Array(this.adjacencies.keys());
+    const coloursAsNumber = Array.from(this.adjacencies.keys());
 
     coloursAsNumber.sort(Colour.compareNumbers);
 
     const adjacencies = new Array();
 
     for(colourNumber in coloursAsNumber) {
-      const adjacentsAsNumber = new Array(this.adjacencies.get(colourNumber));
+      const adjacentsAsNumber = Array.from(this.adjacencies.get(colourNumber));
 
       adjacentsAsNumber.sort(Colour.compareNumbers);
 
