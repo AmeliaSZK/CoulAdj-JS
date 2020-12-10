@@ -489,15 +489,15 @@ class PixelArray {
     const firstIndex = start ?? 0;
     const lastIndex = end ?? this.maxIndex;
     const dataLogArray = new Array();
-    const dataHeader = ['p', 'x', 'y', 'r', 'g', 'b', 'a'].join(COLUMN_SEPARATOR);
+    const dataHeader = ['p', 'row', 'col', 'r', 'g', 'b', 'a'].join(COLUMN_SEPARATOR);
     dataLogArray.push(dataHeader);
     // "pixel" implies "pixelIndex"
 
     for (let index = firstIndex; index <= lastIndex; index++) {
-      const y = this.rowFromIndex(index);
-      const x = this.columnFromIndex(index);
+      const row = this.rowFromIndex(index);
+      const column = this.columnFromIndex(index);
       const colour = Array.from(this.colourFromIndex(index));
-      const entryArray = [index, x, y].concat(colour);
+      const entryArray = [index, row, column].concat(colour);
       const entry = entryArray.join(COLUMN_SEPARATOR);
       dataLogArray.push(entry);
     }
