@@ -365,7 +365,10 @@ class PixelArray {
 
 
   validRowColumn(row, column) {
-    return row <= this.maxRow && column <= this.maxColumn;
+    return 0 <= row
+      && 0 <= column
+      && row <= this.maxRow
+      && column <= this.maxColumn;
   }
 
   /** Decides if the alpha column should be included.
@@ -438,11 +441,11 @@ class PixelArray {
 
   printData() {
     const dataLogArray = new Array();
-    const dataHeader = ['p','x','y', 'r', 'g', 'b', 'a'].join(COLUMN_SEPARATOR);
+    const dataHeader = ['p', 'x', 'y', 'r', 'g', 'b', 'a'].join(COLUMN_SEPARATOR);
     dataLogArray.push(dataHeader);
     // "pixel" implies "pixelIndex"
 
-    for(let index = 0; index <= this.maxIndex; index++){
+    for (let index = 0; index <= this.maxIndex; index++) {
       const y = this.rowFromIndex(index);
       const x = this.columnFromIndex(index);
       const colour = Array.from(this.colourFromIndex(index));
