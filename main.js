@@ -278,16 +278,19 @@ class PixelArray {
     const col4 = new Uint8ClampedArray([0, 32, 0, 255]);
     const col5 = new Uint8ClampedArray([0, 64, 0, 255]);
     const adj1 = new Uint8ClampedArray([...col1, ...col2]);
-    const adj2 = new Uint8ClampedArray([...col3, ...col2b]);
+    const adj2b = new Uint8ClampedArray([...col3, ...col2b]);
+    const adj2 = new Uint8ClampedArray([...col3, ...col2]);
     const adj3 = new Uint8ClampedArray([...col3, ...col4]);
     const adj4 = new Uint8ClampedArray([...col5, ...col2]);
 
     console.log('adj 1 = ' + adj1.toString());
     console.log('adj 2 = ' + adj2.toString());
+    console.log('adj 2b = ' + adj2b.toString());
     console.log('adj 3 = ' + adj3.toString());
     console.log('adj 4 = ' + adj4.toString());
 
     this.adjacencies.add(adj4);
+    this.adjacencies.add(adj2b);
     this.adjacencies.add(adj1);
     this.adjacencies.add(adj3);
     this.adjacencies.add(adj2);
@@ -297,12 +300,12 @@ class PixelArray {
     console.log('col2b vs col3 : ' + Colour.compare(col2b, col3));
     console.log('[255,0,0,0] vs [0,255,0,0] : ' + Colour.compare([255, 0, 0, 0], [0, 255, 0, 0]));
 
-    const sortingTest = [adj4, adj1, adj3, adj2];
-    sortingTest.sort(Colour.compare);
+    const sortingTest = [adj4, adj2b, adj1, adj3, adj2];
+    sortingTest.sort(Colour.compareAdjacency);
     console.log(sortingTest);
 
     const extractionTest = Array.from(this.adjacencies.keys());
-    extractionTest.sort(Colour.compare);
+    extractionTest.sort(Colour.compareAdjacency);
     console.log(extractionTest);
   }
 
@@ -323,34 +326,13 @@ class Colour {
      * 
      * Hence, we want this function to be *fast*
      * 
-     * The current implementation is using bitwise operators in hope that
+     * The first implementation was using bitwise operators in hope that
      * the runtime engine will be smart enough to see that we are treating
      * four consecutive unsigned 8-bit integers as a single unsigned 32-bit.
-     */
-
-    // let vA = a[0]; // vA means valueA
-    // vA <<= 8;
-    // vA |= a[1]; // We don't loop because it would create more CPU instructions.
-    // vA <<= 8;
-    // vA |= a[2];
-    // vA <<= 8;
-    // vA |= a[3];
-
-    // let vB = b[0]; // We copy-pasted code because function calls cost instructions.
-    // vB <<= 8;
-    // vB |= b[1];
-    // vB <<= 8;
-    // vB |= b[2];
-    // vB <<= 8;
-    // vB |= b[3];
-
-    // return vA - vB;
-
-    /**
-     * The bitwise implementation failed because it said that [255,0,0,0] is
-     * smaller than [0,255,0,0]
      * 
-     * This implementation doesn't have this problem.
+     * It failed because it evaluated [255,0,0,0] as lesser than [0,255,0,0]
+     * 
+     * The current implementation doesn't have this problem.
      */
 
     if (a[0] !== b[0]) {
@@ -365,6 +347,22 @@ class Colour {
     } else {
       return a[3] - b[3];
     }
+  }
+
+  /** Compares two Uint8ClampedArray with exactly 8 elements each.
+   * 
+   * @param {Uint8ClampedArray} a 
+   * @param {Uint8ClampedArray} b 
+   */
+  static compareAdjacency(a, b) {
+    const comp1 = Colour.compare(a.slice(0, 4), b.slice(0, 4));
+    if (comp1 !== 0) {
+      return comp1;
+
+    } else {
+      return Colour.compare(a.slice(4, 8), b.slice(4, 8));
+    }
+
   }
 
 
