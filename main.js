@@ -323,17 +323,19 @@ class PixelArray {
 
     // console.log(`pixel [${pixelRow}, ${pixelColumn}] : ${pixelColour}`);
 
+    // # Diagonals #
+    if (this.diagonalsAreRelated) {
+      this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, -1);
+      this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, 1);
+      this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1, -1);
+      this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1, 1);
+    }
 
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, -1);
+    // # Non-diagonals #
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, 0);
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, 1);
-
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, 0, -1);
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, 0, 1);
-
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1, -1);
     this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1, 0);
-    this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1, 1);
 
   }
 
