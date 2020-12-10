@@ -272,6 +272,17 @@ class PixelArray {
     const pixelRow = this.rowFromIndex(pixel);
     const pixelColumn = this.columnFromIndex(pixel);
 
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, -1);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1,  0);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1,  1);
+
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 0, -1);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, 0,  1);
+
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1, -1);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1,  0);
+    this.processNeighbour(pixelColour, pixelRow, pixelColumn, -1,  1);
+
   }
 
   colourFromIndex(index) {
