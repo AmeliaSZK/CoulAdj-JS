@@ -382,18 +382,24 @@ class PixelArray {
     console.log(this.adjacencies);
 
     const coloursAsNumber = Array.from(this.adjacencies.keys());
+    console.log('coloursAsNumber:');
+    console.log(coloursAsNumber.toString());
 
     coloursAsNumber.sort(Colour.compareNumbers);
+    console.log('coloursAsNumber post-sort:');
+    console.log(coloursAsNumber.toString());
 
     const adjacencies = new Array();
 
-    for(colourNumber in coloursAsNumber) {
+    for(colourNumber in coloursAsNumber.values()) {
       const adjacentsAsNumber = Array.from(this.adjacencies.get(colourNumber));
+      console.log('adjacentsAsNumber = ' + adjacentsAsNumber.toString());
 
       adjacentsAsNumber.sort(Colour.compareNumbers);
+      console.log('adjacentsAsNumber post-sort = ' + adjacentsAsNumber.toString());
 
       const colour = Colour.fromNumber(colourNumber);
-      for(adjacentNumber in adjacentsNumber) {
+      for(adjacentNumber in adjacentsNumber.values()) {
         const adjacent = Colour.fromNumber(adjacentNumber);
         const adjacency = Colour.coloursToAdjacency(colour, adjacent);
         adjacencies.push(adjacency);
