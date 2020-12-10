@@ -54,7 +54,7 @@ const activateDevMode = () => {
   outputTextbox.attributes.removeNamedItem('readonly');
   outputTextbox.innerHTML = 'Hello Inner Text\n' + 'Next line?\n' + 'Tabs\t?\tHello';
 
-  const testArray = [255,8,32,128];
+  const testArray = [255, 8, 32, 128];
   const testColour = Uint8ClampedArray.from(testArray);
   console.log('testColour = ' + testColour.toString());
   const testNumber = Colour.toNumber(testColour);
@@ -352,7 +352,7 @@ class PixelArray {
     const neighColourNumber = Colour.toNumber(neighColour);
 
     // If pixelColour not in the Map, create the entry and create its Set
-    if(!this.adjacencies.has(pixelColourNumber)){
+    if (!this.adjacencies.has(pixelColourNumber)) {
       this.adjacencies.set(pixelColourNumber, new Set());
     }
 
@@ -391,7 +391,7 @@ class PixelArray {
 
     const adjacencies = new Array();
 
-    for(colourNumber in coloursAsNumber.values()) {
+    coloursAsNumber.forEach(colourNumber => {
       const adjacentsAsNumber = Array.from(this.adjacencies.get(colourNumber));
       console.log('adjacentsAsNumber = ' + adjacentsAsNumber.toString());
 
@@ -399,12 +399,13 @@ class PixelArray {
       console.log('adjacentsAsNumber post-sort = ' + adjacentsAsNumber.toString());
 
       const colour = Colour.fromNumber(colourNumber);
-      for(adjacentNumber in adjacentsNumber.values()) {
+
+      adjacentsNumber.forEach(adjacentNumber => {
         const adjacent = Colour.fromNumber(adjacentNumber);
         const adjacency = Colour.coloursToAdjacency(colour, adjacent);
         adjacencies.push(adjacency);
-      }
-    }
+      });
+    });
 
     console.log('adjacencies in stringify:');
     console.log(adjacencies);
