@@ -56,10 +56,11 @@ const activateDevMode = () => {
 
   const testArray = [255,8,32,128];
   const testColour = Uint8ClampedArray.from(testArray);
+  console.log('testColour = ' + testColour.toString());
   const testNumber = Colour.toNumber(testColour);
-  console.log(testNumber);
+  console.log('testNumber = ' + testNumber);
   const testColour2 = Colour.fromNumber(testNumber);
-  console.log(testColour2.toString());
+  console.log('testColour2 = ' + testColour2.toString());
 }
 
 /** Process the source image and write the output.
@@ -508,15 +509,15 @@ class Colour {
     colourArray.push(n & 0xff);
     console.log('colourArray = ' + colourArray.toString());
     console.log('n = ' + n);
-    n >>> 8;
+    n >>>= 8;
     colourArray.push(n & 0xff);
     console.log('colourArray = ' + colourArray.toString());
     console.log('n = ' + n);
-    n >>> 8;
+    n >>>= 8;
     colourArray.push(n & 0xff);
     console.log('colourArray = ' + colourArray.toString());
     console.log('n = ' + n);
-    n >>> 8;
+    n >>>= 8;
     colourArray.push(n & 0xff);
     console.log('colourArray = ' + colourArray.toString());
     console.log('n = ' + n);
