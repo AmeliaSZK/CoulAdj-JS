@@ -318,8 +318,8 @@ class PixelArray {
       return;
     }
 
-    const neighIndex = indexFromRowColumn(neighRow, neighColumn);
-    const neighColour = colourFromIndex(neighIndex);
+    const neighIndex = this.indexFromRowColumn(neighRow, neighColumn);
+    const neighColour = this.colourFromIndex(neighIndex);
 
     if(Colour.same(pixelColour, neighColour)) {
       return;
@@ -366,8 +366,8 @@ class PixelArray {
     adjacencies.forEach(adjacency => output.push(stringify(adjacency)));
 
     this.results = output.join('\n');
-    console.log('Results :');
-    console.log(this.results);
+    // console.log('Results :');
+    // console.log(this.results);
 
     setTimeout(this.showResults(), 0);
   }
