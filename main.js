@@ -244,6 +244,8 @@ class PixelArray {
     // We even got the correct height and width now :')
     const imgData = createImageBitmap(source, { premultiplyAlpha: 'none', colorSpaceConversion: 'none' })
       .then(bitmap => {
+        canvas.width = bitmap.width;
+        canvas.height = bitmap.height;
         context.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height, 0, 0, bitmap.width, bitmap.height);
         return bitmap;
       })
