@@ -215,9 +215,9 @@ class PixelArray {
    */
   constructor(source, options, logError) {
     this.source = source;
-    this.diagonals = options.diagonals ?? DiagonalsSettings.ADJACENT;
-    this.diagonalsAreRelated = this.diagonals === DiagonalsSettings.ADJACENT ? true : false;
-    this.includeAlpha = options.includeAlpha ?? IncludeAlphaSettings.WHEN_RELEVANT;
+    this.diagonalsSetting = options.diagonals ?? DiagonalsSettings.ADJACENT;
+    this.includeAlphaSetting = options.includeAlpha ?? IncludeAlphaSettings.WHEN_RELEVANT;
+    this.diagonalsAreRelated = this.diagonalsSetting === DiagonalsSettings.ADJACENT ? true : false;
     this.logError = logError ?? console.error;
     // All those variables initialized to -1 are given their actual value
     //  in extractImageData. Yes, I know I (probably) shouldn't be doing it 
@@ -227,7 +227,9 @@ class PixelArray {
     this.maxRow = -1;
     this.maxColumn = -1;
     this.maxPixel = -1;
-    this.data;
+    this.maxIndex = -1;
+    this.nbPixels = -1;
+    this.data; // assigned during this.extractImageData()
     this.adjacencies = new Map();
     this.results = '';
     this.imageData = this.extractImageData(this.source);
@@ -261,6 +263,7 @@ class PixelArray {
         this.maxColumn = this.width - 1;
         this.maxPixel = this.height * this.width - 1;
         this.maxIndex = this.maxPixel;
+        this.nbPixels = this.maxPixel + 1;
         console.log('this.height = ' + this.height);
         console.log('this.width = ' + this.width);
         console.log('this.maxRow = ' + this.maxRow);
@@ -425,7 +428,37 @@ class PixelArray {
    * 
    */
   decideAlpha() {
-    return true;
+    if (this.includeAlphaSetting === IncludeAlphaSettings.NEVER) {
+      return false;
+
+    } else if (this.includeAlphaSetting === IncludeAlphaSettings.ALWAYS) {
+      return true;
+
+    } else {
+      return this.somePixelsHaveTransparency();
+
+    }
+  }
+
+  somePixelsHaveTransparency() {
+    console.log('Starting somePixelsHaveTransparency()');
+    const alphaOffset = 3; // Per https://developer.mozilla.org/en-US/docs/Web/API/ImageData/data
+    const elementsPerPixel = 4; // Same as above: RGBA
+    const maxComponentIndex = this.data.length - 1;
+
+    /** We check every alpha component of every pixel. If one of them is not
+     * equal to 255, then it means that this pixel has transparency, so
+     * we return true immediately.
+     */
+    for (let i = alphaOffset; i <= maxComponentIndex; i += elementsPerPixel) {
+      if (this.data[i] !== 255) {
+        console.log('Early exit of somePixelsHaveTransparency(): true');
+        return true;
+      }
+    }
+
+    console.log('Finished somePixelsHaveTransparency(): false');
+    return false;
   }
 
   stringify() {
