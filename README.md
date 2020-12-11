@@ -38,10 +38,11 @@ of tools can affect development and compatibility.
         a common edge. (top, bottom, left, and right neighbours)
         * By default, all 8 neighbours are considered adjacent.
     * Always include alpha column in output
-        * If the image doesn't have an alpha component, one will be added at
-        full opacity in the output.
-        * By default, images without an alpha component won't get the
-        alpha columns in the output.
+        * ~~If the image doesn't have an alpha component, one will be added at
+        full opacity in the output.~~
+        * ~~By default, images without an alpha component won't get the
+        alpha columns in the output.~~
+        * Currently, alpha column is always included.
 
 ### Command Line Interface
 
