@@ -44,6 +44,8 @@ of tools can affect development and compatibility.
 *   Images with more than 8 bits per color channel are not supported.
 *   Internet Explorer not supported, and will not be.
 *   Safari not compatible until they support [createImageBitmap](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap#Browser_compatibility).
+*   Firefox not (yet) compatible because I don't know how to detect that a browser 
+will only support 1 argument in a function call. To be fixed.
 
 
 ## Output
