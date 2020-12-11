@@ -73,7 +73,7 @@ const okButtonClick = (evt) => {
   evt.stopPropagation(); // I don't know why my teacher said I need this
   evt.preventDefault(); // Needed to prevent the page from reloading.
   // preventDefault will also disable the default `required` verification!!
-  
+
   document.getElementById('output-textbox').innerHTML = '';
 
   const chosenFiles = document.getElementById('choose-file-button').files;
@@ -477,6 +477,7 @@ class PixelArray {
     // console.log('Results :');
     // console.log(this.results);
 
+    console.log('Finished stringify');
     setTimeout(this.showResults(), 0);
   }
 
