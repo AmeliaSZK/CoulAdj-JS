@@ -263,7 +263,7 @@ class PixelArray {
    * @param {Number} pixel Index of the pixel to process
    */
   processManyPixels(startPixel, nbPixels) {
-    console.log('Entered processManyPixels. start = ' + startPixel);
+    //console.log('Entered processManyPixels. start = ' + startPixel);
 
     // # Stop condition(s) #
     if (startPixel > this.maxPixel) {
