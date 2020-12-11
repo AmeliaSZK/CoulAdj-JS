@@ -85,11 +85,9 @@ const okButtonClick = (evt) => {
   }
 
   const chosenDiagonals = parseDiagonalsSetting();
-  const chosenIncludeAlpha = parseDiagonalsSetting();
 
   const chosenOptions = {
-    diagonals: chosenDiagonals,
-    includeAlpha: chosenIncludeAlpha
+    diagonals: chosenDiagonals
   };
 
   const image = new PixelArray(chosenFiles[0], chosenOptions, console.error);
@@ -105,24 +103,6 @@ const parseDiagonalsSetting = () => {
 
   } else if (document.getElementById('opt-diags-unrelated').checked) {
     return DiagonalsSettings.UNRELATED;
-
-  } else {
-    return undefined;
-  }
-}
-
-const parseIncludeAlphaSetting = () => {
-  if (document.getElementById('opt-alpha-when-present').checked) {
-    return IncludeAlphaSettings.WHEN_PRESENT;
-
-  } else if (document.getElementById('opt-alpha-when-used').checked) {
-    return IncludeAlphaSettings.WHEN_USED;
-
-  } else if (document.getElementById('opt-alpha-always').checked) {
-    return IncludeAlphaSettings.ALWAYS;
-
-  } else if (document.getElementById('opt-alpha-never').checked) {
-    return IncludeAlphaSettings.NEVER;
 
   } else {
     return undefined;
@@ -195,13 +175,6 @@ const DiagonalsSettings = {
   UNRELATED: 'unrelated'
 }
 
-const IncludeAlphaSettings = {
-  WHEN_PRESENT: 'when-present',
-  WHEN_USED: 'when-used',
-  ALWAYS: 'always',
-  NEVER: 'never'
-}
-
 
 class PixelArray {
 
@@ -210,13 +183,11 @@ class PixelArray {
    * @param {File} source The image file to process
    * @param {Object} options Optional settings.
    * @param {string} options.diagonals A value from DiagonalsSettings.
-   * @param {string} options.includeAlpha A value from IncludeAlphaSettings.
    * @param {Function} logError A function that takes a string in argument. Used to report error messages.
    */
   constructor(source, options, logError) {
     this.source = source;
     this.diagonalsSetting = options.diagonals ?? DiagonalsSettings.ADJACENT;
-    this.includeAlphaSetting = options.includeAlpha ?? IncludeAlphaSettings.WHEN_RELEVANT;
     this.diagonalsAreRelated = this.diagonalsSetting === DiagonalsSettings.ADJACENT ? true : false;
     this.logError = logError ?? console.error;
     // All those variables initialized to -1 are given their actual value
@@ -421,46 +392,6 @@ class PixelArray {
       && column <= this.maxColumn;
   }
 
-  /** Decides if the alpha column should be included.
-   * 
-   * Currently always return true because the available image libraries don't
-   * say if the original image had an alpha channel.
-   * 
-   */
-  decideAlpha() {
-    if (this.includeAlphaSetting === IncludeAlphaSettings.NEVER) {
-      return false;
-
-    } else if (this.includeAlphaSetting === IncludeAlphaSettings.ALWAYS) {
-      return true;
-
-    } else {
-      return this.somePixelsHaveTransparency();
-
-    }
-  }
-
-  somePixelsHaveTransparency() {
-    console.log('Starting somePixelsHaveTransparency()');
-    const alphaOffset = 3; // Per https://developer.mozilla.org/en-US/docs/Web/API/ImageData/data
-    const elementsPerPixel = 4; // Same as above: RGBA
-    const maxComponentIndex = this.data.length - 1;
-
-    /** We check every alpha component of every pixel. If one of them is not
-     * equal to 255, then it means that this pixel has transparency, so
-     * we return true immediately.
-     */
-    for (let i = alphaOffset; i <= maxComponentIndex; i += elementsPerPixel) {
-      if (this.data[i] !== 255) {
-        console.log('Early exit of somePixelsHaveTransparency(): true');
-        return true;
-      }
-    }
-
-    console.log('Finished somePixelsHaveTransparency(): false');
-    return false;
-  }
-
   stringify() {
     console.log('Starting stringify');
 
@@ -496,17 +427,21 @@ class PixelArray {
     // console.log('adjacencies in stringify:');
     // console.log(adjacencies);
 
-    const includeAlpha = this.decideAlpha();
-
     let output = new Array();
 
-    const header = includeAlpha ? RBGALPHA_HEADER : RBG_HEADER;
+    /** Always true because we decided to drop support for the Alpha option.
+     * We kept some support in the code in case we decide to add it later.
+     */
+    const includeAlpha = true;
+    const header = includeAlpha ? HEADER.RBG_ALPHA : HEADER.RBG;
     const stringify = includeAlpha ? Colour.adjacencyToRgbAlphaString : Colour.adjacencyToRgbString;
 
     output.push(header);
     adjacencies.forEach(adjacency => output.push(stringify(adjacency)));
 
-    this.results = output.join('\n');
+    // TSV specification say that each line must end with EOL
+    // https://www.iana.org/assignments/media-types/text/tab-separated-values
+    this.results = output.map(line => line + '\n').join('');
     // console.log('Results :');
     // console.log(this.results);
 
@@ -531,7 +466,6 @@ class PixelArray {
     const dataLogArray = new Array();
     const dataHeader = ['p', 'row', 'col', 'r', 'g', 'b', 'a'].join(COLUMN_SEPARATOR);
     dataLogArray.push(dataHeader);
-    // "pixel" implies "pixelIndex"
 
     for (let index = firstIndex; index <= lastIndex; index++) {
       const row = this.rowFromIndex(index);
@@ -601,9 +535,11 @@ const COLUMN_SEPARATOR = '\t';
  * 
  * DO NOT CHANGE
  */
-const RBG_HEADER = ['r', 'g', 'b', 'adj_r', 'adj_g', 'adj_b'].join(COLUMN_SEPARATOR);
-const RBGALPHA_HEADER = ['r', 'g', 'b', 'a', 'adj_r', 'adj_g', 'adj_b', 'adj_a'].join(COLUMN_SEPARATOR);
-// RgbAplha instead of Rgba to avoid unnoticed typos.
+const HEADER = {
+  RBG: ['r', 'g', 'b', 'adj_r', 'adj_g', 'adj_b'].join(COLUMN_SEPARATOR),
+  // RgbAplha instead of Rgba to avoid unnoticed typos.
+  RBG_ALPHA: ['r', 'g', 'b', 'a', 'adj_r', 'adj_g', 'adj_b', 'adj_a'].join(COLUMN_SEPARATOR)
+};
 
 
 /** This is currently a collection of static functions to work with "colours".

@@ -1,14 +1,16 @@
 # Colour Adjacencies
 Reads an image and outputs the colour adjacencies in a TSV format.
-Primary objective is to help me learn basic web development. 
 Intended to be used in a web browser locally, without sending any data to a server.
 
+Primary objective is to help me learn basic web development. 
+
 This project declares conformity to [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
+There is currently no API version number, because there has been no public release.
+
+**This project is still in development and is not ready for public consumption.**
 
 "Colour" and "color" will be used interchangeably and arbitrarily in both the code
 and documentation.
-
-This project is still in development.
 
 Long term objective is to port this as an Excel Add-In.
 
@@ -32,27 +34,24 @@ of tools can affect development and compatibility.
 
 ## Input 
 *   Source image file
-*   Options
+*   Option(s)
     * Don't relate diagonals
         * For each pixel, only consider as adjacent the four (4) neighbours with
         a common edge. (top, bottom, left, and right neighbours)
         * By default, all 8 neighbours are considered adjacent.
-    * Always include alpha column in output
-        * ~~If the image doesn't have an alpha component, one will be added at
-        full opacity in the output.~~
-        * ~~By default, images without an alpha component won't get the
-        alpha columns in the output.~~
-        * Currently, alpha column is always included.
 
-### Command Line Interface
-
-None, because my primary objective is to learn JavaScript, so I don't want
-to use Node.js for this first implementation.
+## Known limitations
+*   Images with more than 8 bits per color channel are not supported.
+*   Internet Explorer not supported, and will not be.
+*   Safari not compatible until they support [createImageBitmap](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap#Browser_compatibility).
 
 
 ## Output
-*   Tab-separated values.
-*   For images **with** an alpha channel, data will be formatted like this:
+*   Tab-separated values. (tsv)
+    *   [Summary on Wikipedia](https://en.wikipedia.org/wiki/Tab-separated_values) 
+    *   [Official specifications](https://www.iana.org/assignments/media-types/text/tab-separated-values)
+
+*   Data will be organized like this:
 
     |r  |g  |b  |a  |adj_r|adj_g|adj_b|adj_a|
     |---|---|---|---|-----|-----|-----|-----|
@@ -61,16 +60,8 @@ to use Node.js for this first implementation.
     |0  |32 |64 |255|0    |32   |0    |255  |
     |0  |64 |0  |255|0    |0    |0    |255  |
 
-*   By default, for images **without** an alpha channel, the alpha columns will be absent.
-
-    |r  |g  |b  |adj_r|adj_g|adj_b|
-    |---|---|---|-----|-----|-----|
-    |0  |32 |64 |0    |0    |0    |
-    |0  |32 |64 |0    |32   |0    |
-    |0  |64 |0  |0    |0    |0    |
-
-*   If `Always include alpha column in output` was specified, images **without** an alpha channel
-will get an alpha column at full opacity.
+*   The alpha column will always be included in the output. Images without an alpha channel
+will get an alpha value at full opacity.
 
     |r  |g  |b  |a  |adj_r|adj_g|adj_b|adj_a|
     |---|---|---|---|-----|-----|-----|-----|
@@ -81,46 +72,56 @@ will get an alpha column at full opacity.
 
 *   The rows will be sorted in ascending order.
 
-    |r  |g  |b  |adj_r|adj_g|adj_b|
-    |---|---|---|-----|-----|-----|
-    |0  |32 |64 |0    |0    |0    |
-    |0  |32 |64 |0    |32   |0    |
-    |0  |64 |0  |0    |0    |0    |
+    |r  |g  |b  |a  |adj_r|adj_g|adj_b|adj_a|
+    |---|---|---|---|-----|-----|-----|-----|
+    |0  |32 |64 |255|0    |0    |0    |255  |
+    |0  |32 |64 |255|0    |32   |0    |255  |
+    |0  |32 |64 |255|0    |128  |0    |255  |
+    |0  |64 |0  |255|0    |0    |0    |255  |
+    |32 |0  |0  |255|0    |0    |0    |255  |
+    |255|0  |0  |255|0    |0    |0    |255  |
 
 *   Symmetric relations will be included;
 if A is adjacent to B, then B is adjacent to A, 
 so this single relation will generate two rows.
 
-    |r  |g  |b  |adj_r|adj_g|adj_b|
-    |---|---|---|-----|-----|-----|
-    |0  |0  |0  |0    |64   |0    |
-    |0  |64 |0  |0    |0    |0    |
+    |r  |g  |b  |a  |adj_r|adj_g|adj_b|adj_a|
+    |---|---|---|---|-----|-----|-----|-----|
+    |0  |0  |0  |255|0    |64   |0    |255  |
+    |0  |64 |0  |255|0    |0    |0    |255  |
 
 *   Reflexive relations will *not* be included;
 a color cannot be adjacent with itself.
 
-*   Columns will be sorted in this order:
+*   Colors that differ only in their alpha value are considered distinct.
+
+    |r  |g  |b  |a  |adj_r|adj_g|adj_b|adj_a|
+    |---|---|---|---|-----|-----|-----|-----|
+    |0  |0  |0  |128|0    |0    |0    |255  |
+    |0  |0  |0  |255|0    |0    |0    |128  |
+
+*   Columns will appear in this order:
     - Red
     - Green
     - Blue
-    - Alpha (if applicable)
+    - Alpha
     - Adjacent Red
     - Adjacent Green
     - Adjacent Blue
-    - Adjacent Alpha (if applicable)
+    - Adjacent Alpha
 
 *   The first row will contain the column names.
 *   The column names will be:
 
-    |Column Name|Color Channel  | Note           |
-    |-----------|---------------|----------------|
+    |Column Name|Color Channel  |
+    |-----------|---------------|
     | `r`       |Red            |
     | `g`       |Green          |
     | `b`       |Blue           |
-    | `a`       |Alpha          |(if applicable) |
+    | `a`       |Alpha          |
     | `adj_r`   |Adjacent Red   |
     | `adj_g`   |Adjacent Green |
     | `adj_b`   |Adjacent Blue  |
-    | `adj_a`   |Adjacent Alpha |(if applicable) |
+    | `adj_a`   |Adjacent Alpha |
 
 *   The line-endings may be either in Windows (CRLF) or Unix (LF) style.
