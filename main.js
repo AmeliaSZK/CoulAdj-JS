@@ -42,7 +42,7 @@
  * turn it off before production lol.
  * 
  */
-const DEV_MODE = true;
+const DEV_MODE = false;
 
 const activateDevMode = () => {
   console.log('Dev mode activated.');
@@ -91,7 +91,6 @@ const okButtonClick = (evt) => {
   };
 
   const image = new PixelArray(chosenFiles[0], chosenOptions, console.error);
-  setTimeout(console.log, 0, 'setTimeout in okButtonClick');
 
   return true;
 
@@ -202,7 +201,7 @@ class PixelArray {
     this.nbPixels = -1;
     this.data; // assigned during this.extractImageData()
     this.adjacencies = new Map();
-    this.results = '';
+    this.results = ''; // assigned during this.stringify()
     this.imageData = this.extractImageData(this.source);
 
   }
@@ -215,8 +214,6 @@ class PixelArray {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
 
-    // My shit finally works :')
-    // We even got the correct height and width now :')
     const imgData = createImageBitmap(source, { premultiplyAlpha: 'none', colorSpaceConversion: 'none' })
       .then(bitmap => {
         canvas.width = bitmap.width;
@@ -301,8 +298,6 @@ class PixelArray {
     const pixelRow = this.rowFromIndex(pixel);
     const pixelColumn = this.columnFromIndex(pixel);
 
-    // console.log(`pixel [${pixelRow}, ${pixelColumn}] : ${pixelColour}`);
-
     // # Diagonals #
     if (this.diagonalsAreRelated) {
       this.processNeighbour(pixelColour, pixelRow, pixelColumn, 1, -1);
@@ -356,13 +351,10 @@ class PixelArray {
     const neighIndex = this.indexFromRowColumn(neighRow, neighColumn);
     const neighColour = this.colourFromIndex(neighIndex);
 
-    // console.log(`\t neigh [${neighRow}, ${neighColumn}] : ${neighColour}`);
-
     if (Colour.same(pixelColour, neighColour)) {
       return;
     }
 
-    // console.log(`\t\t sending ${pixelColour} & ${neighColour}`);
     this.register(pixelColour, neighColour);
   }
 
@@ -375,7 +367,7 @@ class PixelArray {
     const pixelColourNumber = Colour.toNumber(pixelColour);
     const neighColourNumber = Colour.toNumber(neighColour);
 
-    // If pixelColour not in the Map, create the entry and create its Set
+    // If pixelColour not in the Map, create the entry and initialize a new Set
     if (!this.adjacencies.has(pixelColourNumber)) {
       this.adjacencies.set(pixelColourNumber, new Set());
     }
@@ -395,25 +387,14 @@ class PixelArray {
   stringify() {
     console.log('Starting stringify');
 
-    // console.log('this.adjacencies:');
-    // console.log(this.adjacencies);
-
     const coloursAsNumber = Array.from(this.adjacencies.keys());
-    // console.log('coloursAsNumber:');
-    // console.log(coloursAsNumber.toString());
-
     coloursAsNumber.sort(Colour.compareNumbers);
-    // console.log('coloursAsNumber post-sort:');
-    // console.log(coloursAsNumber.toString());
 
     const adjacencies = new Array();
 
     coloursAsNumber.forEach(colourNumber => {
       const adjacentsAsNumber = Array.from(this.adjacencies.get(colourNumber));
-      // console.log('adjacentsAsNumber = ' + adjacentsAsNumber.toString());
-
       adjacentsAsNumber.sort(Colour.compareNumbers);
-      // console.log('adjacentsAsNumber post-sort = ' + adjacentsAsNumber.toString());
 
       const colour = Colour.fromNumber(colourNumber);
 
@@ -424,26 +405,21 @@ class PixelArray {
       });
     });
 
-    // console.log('adjacencies in stringify:');
-    // console.log(adjacencies);
-
-    let output = new Array();
+    let outputLines = new Array();
 
     /** Always true because we decided to drop support for the Alpha option.
      * We kept some support in the code in case we decide to add it later.
      */
     const includeAlpha = true;
     const header = includeAlpha ? HEADER.RBG_ALPHA : HEADER.RBG;
-    const stringify = includeAlpha ? Colour.adjacencyToRgbAlphaString : Colour.adjacencyToRgbString;
+    const stringifyAdjacency = includeAlpha ? Colour.adjacencyToRgbAlphaString : Colour.adjacencyToRgbString;
 
-    output.push(header);
-    adjacencies.forEach(adjacency => output.push(stringify(adjacency)));
+    outputLines.push(header);
+    adjacencies.forEach(adjacency => outputLines.push(stringifyAdjacency(adjacency)));
 
     // TSV specification say that each line must end with EOL
     // https://www.iana.org/assignments/media-types/text/tab-separated-values
-    this.results = output.map(line => line + '\n').join('');
-    // console.log('Results :');
-    // console.log(this.results);
+    this.results = outputLines.map(line => line + '\n').join('');
 
     console.log('Finished stringify');
     setTimeout(this.showResults(), 0);
@@ -455,11 +431,19 @@ class PixelArray {
     outputTextbox.innerHTML = this.results;
   }
 
+  /** Show pixel data instead of color adjacencies. For debug.
+   * 
+   */
   showData() {
     const outputTextbox = document.getElementById('output-textbox');
     outputTextbox.innerHTML = this.stringifyData(0, 10 * 1000);
   }
 
+  /** Stringify pixel data. For debug.
+   * 
+   * @param {Number} start First pixel index to include. Defaults to 0
+   * @param {Number} end Last pixel index to include. Defaults to `this.maxIndex`
+   */
   stringifyData(start, end) {
     const firstIndex = start ?? 0;
     const lastIndex = end ?? this.maxIndex;
@@ -697,10 +681,4 @@ class Colour {
   }
 
 
-}
-
-
-
-const computeColourAdjacencies = () => {
-  return 'hello';
 }
