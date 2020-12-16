@@ -255,7 +255,7 @@ class PixelArray {
     console.log('batchSize = ' + batchSize.toLocaleString());
 
     const firstIndex = 0; // To avoid confusion with the 0 delay below
-    setTimeout(this.processManyPixels(firstIndex, batchSize), 0);
+    setTimeout(() => this.processManyPixels(firstIndex, batchSize), 0);
   }
 
   /**
@@ -268,7 +268,7 @@ class PixelArray {
     // # Stop condition(s) #
     if (startPixel > this.maxPixel) {
       console.log('Stopping processManyPixels.');
-      setTimeout(this.stringify(), 0);
+      setTimeout(() => this.stringify(), 0);
       return;
     }
 
@@ -282,7 +282,7 @@ class PixelArray {
     }
 
     // # Queue the next batch #
-    setTimeout(this.processManyPixels(lastPixel + 1, nbPixels), 0);
+    setTimeout(() => this.processManyPixels(lastPixel + 1, nbPixels), 0);
   }
 
   /** Does NOT verify that the pixel is inbound.
@@ -422,7 +422,7 @@ class PixelArray {
     this.results = outputLines.map(line => line + '\n').join('');
 
     console.log('Finished stringify');
-    setTimeout(this.showResults(), 0);
+    setTimeout(() => this.showResults(), 0);
   }
 
   showResults() {
