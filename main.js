@@ -199,6 +199,7 @@ class PixelArray {
     this.maxPixel = -1;
     this.maxIndex = -1;
     this.nbPixels = -1;
+    this.progressBar = document.getElementById('progress-bar');
     this.data; // assigned during this.extractImageData()
     this.adjacencies = new Map();
     this.results = ''; // assigned during this.stringify()
@@ -254,6 +255,9 @@ class PixelArray {
     const batchSize = 100 * 1000; // Written like this for clarity.
     console.log('batchSize = ' + batchSize.toLocaleString());
 
+    this.progressBar.value = 0;
+    this.progressBar.max = this.maxPixel;
+
     const firstIndex = 0; // To avoid confusion with the 0 delay below
     setTimeout(() => this.processManyPixels(firstIndex, batchSize), 0);
   }
@@ -281,8 +285,14 @@ class PixelArray {
       this.processOnePixel(pixel);
     }
 
+    this.updateProgress(lastPixel);
+
     // # Queue the next batch #
     setTimeout(() => this.processManyPixels(lastPixel + 1, nbPixels), 0);
+  }
+
+  updateProgress(pixel) {
+    this.progressBar.value = pixel;
   }
 
   /** Does NOT verify that the pixel is inbound.
@@ -290,9 +300,9 @@ class PixelArray {
    * @param {*} pixel Index of the pixel. First pixel is at 0.
    */
   processOnePixel(pixel) {
-    if (pixel % (1 * 1000 * 1000) === 0) {
-      console.log('Starting pixel ' + pixel.toLocaleString());
-    }
+    // if (pixel % (1 * 1000 * 1000) === 0) {
+    //   console.log('Starting pixel ' + pixel.toLocaleString());
+    // }
 
     const pixelColour = this.colourFromIndex(pixel);
     const pixelRow = this.rowFromIndex(pixel);
