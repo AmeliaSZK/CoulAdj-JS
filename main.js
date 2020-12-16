@@ -251,7 +251,7 @@ class PixelArray {
    */
   startProcessingPixels() {
     console.log('Entered startProcessingPixels');
-    const batchSize = 1 * 1000 * 1000; // Written like this for clarity.
+    const batchSize = 100 * 1000; // Written like this for clarity.
     console.log('batchSize = ' + batchSize.toLocaleString());
 
     const firstIndex = 0; // To avoid confusion with the 0 delay below
